@@ -9,7 +9,7 @@ class RSAPrivateKey implements PrivateKey {
   pointy.RSAPrivateKey _privateKey;
   static pointy.ECCurve_secp256k1 secp256k1 = pointy.ECCurve_secp256k1();
 
-  RSAPrivateKey(BigInt modulus, BigInt exponent,  BigInt p, BigInt q) {
+  RSAPrivateKey(BigInt modulus, BigInt exponent, BigInt p, BigInt q) {
     this._privateKey = pointy.RSAPrivateKey(modulus, exponent, p, q);
   }
 
@@ -31,14 +31,14 @@ class RSAPrivateKey implements PrivateKey {
         modulus.valueAsBigInteger,
         privateExponent.valueAsBigInteger,
         p.valueAsBigInteger,
-        q.valueAsBigInteger
-    );
+        q.valueAsBigInteger);
   }
 
   @override
   String createSignature(String message) {
     pointy.Signer signer = pointy.Signer('SHA-256/RSA');
-    pointy.AsymmetricKeyParameter<pointy.RSAPrivateKey> privateKeyParams = pointy.PrivateKeyParameter(this._privateKey);
+    pointy.AsymmetricKeyParameter<pointy.RSAPrivateKey> privateKeyParams =
+        pointy.PrivateKeyParameter(this._privateKey);
     signer.init(true, privateKeyParams);
     pointy.RSASignature sig = signer.generateSignature(utf8.encode(message));
     return base64Encode(sig.bytes);
@@ -47,21 +47,25 @@ class RSAPrivateKey implements PrivateKey {
   @override
   String decrypt(String message) {
     pointy.RSAEngine cipher = pointy.RSAEngine();
-    cipher.init(false, pointy.PrivateKeyParameter<pointy.RSAPrivateKey>(this._privateKey));
+    cipher.init(false,
+        pointy.PrivateKeyParameter<pointy.RSAPrivateKey>(this._privateKey));
     var text = cipher.process(base64Decode(message));
     return utf8.decode(text);
   }
 
   @override
-  RSAPublicKey get publicKey => RSAPublicKey(_privateKey.modulus, _privateKey.exponent);
+  RSAPublicKey get publicKey =>
+      RSAPublicKey(_privateKey.modulus, _privateKey.exponent);
 
   @override
   String toString() {
     ASN1Integer version = ASN1Integer(BigInt.from(0));
 
     ASN1Sequence algorithmSeq = ASN1Sequence();
-    ASN1Object algorithmAsn1Obj = ASN1Object.fromBytes(Uint8List.fromList([0x6, 0x9, 0x2a, 0x86, 0x48, 0x86, 0xf7, 0xd, 0x1, 0x1, 0x1]));
-    ASN1Object paramsAsn1Obj = ASN1Object.fromBytes(Uint8List.fromList([0x5, 0x0]));
+    ASN1Object algorithmAsn1Obj = ASN1Object.fromBytes(Uint8List.fromList(
+        [0x6, 0x9, 0x2a, 0x86, 0x48, 0x86, 0xf7, 0xd, 0x1, 0x1, 0x1]));
+    ASN1Object paramsAsn1Obj =
+        ASN1Object.fromBytes(Uint8List.fromList([0x5, 0x0]));
     algorithmSeq.add(algorithmAsn1Obj);
     algorithmSeq.add(paramsAsn1Obj);
 
@@ -87,7 +91,8 @@ class RSAPrivateKey implements PrivateKey {
     privateKeySeq.add(exp1);
     privateKeySeq.add(exp2);
     privateKeySeq.add(co);
-    ASN1OctetString publicKeySeqOctetString = ASN1OctetString(Uint8List.fromList(privateKeySeq.encodedBytes));
+    ASN1OctetString publicKeySeqOctetString =
+        ASN1OctetString(Uint8List.fromList(privateKeySeq.encodedBytes));
 
     ASN1Sequence topLevelSeq = ASN1Sequence();
     topLevelSeq.add(version);
