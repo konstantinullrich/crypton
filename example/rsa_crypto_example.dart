@@ -1,7 +1,7 @@
 import 'package:crypton/crypton.dart';
 
 void main() {
-  RSAKeypair rsaKeypair = RSAKeypair.fromRandom();;
+  RSAKeypair rsaKeypair = RSAKeypair.fromRandom();
   String message = DateTime.now().millisecondsSinceEpoch.toRadixString(16);
 
   String privateKeyString = rsaKeypair.privateKey.toString();
