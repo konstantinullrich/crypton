@@ -28,5 +28,11 @@ void main() {
       bool verified = rsaKeypair.publicKey.verifySignature(message, signature);
       expect(verified, isTrue);
     });
+
+    test('Encrypt and Decrypt', () {
+      String encrypted = rsaKeypair.publicKey.encrypt(message);
+      String decrypted = rsaKeypair.privateKey.decrypt(encrypted);
+      expect(message, decrypted);
+    });
   });
 }

@@ -39,6 +39,13 @@ class RSAPublicKey implements PublicKey {
   }
 
   @override
+  String encrypt(String message) {
+    pointy.RSAEngine cipher = pointy.RSAEngine();
+    cipher.init(true, pointy.PublicKeyParameter<pointy.RSAPublicKey>(this._publicKey));
+    return base64Encode(cipher.process(utf8.encode(message)));
+  }
+
+  @override
   String toString() {
     ASN1Sequence algorithmSeq = ASN1Sequence();
     ASN1Object algorithmAsn1Obj = ASN1Object.fromBytes(Uint8List.fromList([0x6, 0x9, 0x2a, 0x86, 0x48, 0x86, 0xf7, 0xd, 0x1, 0x1, 0x1]));

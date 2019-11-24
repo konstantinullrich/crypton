@@ -45,6 +45,14 @@ class RSAPrivateKey implements PrivateKey {
   }
 
   @override
+  String decrypt(String message) {
+    pointy.RSAEngine cipher = pointy.RSAEngine();
+    cipher.init(false, pointy.PrivateKeyParameter<pointy.RSAPrivateKey>(this._privateKey));
+    var text = cipher.process(base64Decode(message));
+    return utf8.decode(text);
+  }
+
+  @override
   RSAPublicKey get publicKey => RSAPublicKey(_privateKey.modulus, _privateKey.exponent);
 
   @override
