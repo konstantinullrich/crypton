@@ -1,5 +1,9 @@
+import 'dart:convert';
+
 import 'package:crypton/crypton.dart';
 import 'package:pointycastle/export.dart' as pointy;
+
+import 'helper.dart';
 
 class ECPrivateKey implements PrivateKey {
   pointy.ECPrivateKey _privateKey;
@@ -17,7 +21,14 @@ class ECPrivateKey implements PrivateKey {
   }
 
   @override
-  String createSignature(String message) => null;
+  String createSignature(String message) {
+
+    pointy.AsymmetricKeyParameter<pointy.ECPrivateKey> privateKeyParams = pointy.PrivateKeyParameter(this._privateKey);
+    pointy.ECDSASigner signer = pointy.ECDSASigner();
+    signer.init(true, withRandom(privateKeyParams));
+    pointy.ECSignature signature = signer.generateSignature(utf8.encode(message));
+    return signature.r.toRadixString(16) + signature.s.toRadixString(16);
+  }
 
   @override
   ECPublicKey get publicKey {

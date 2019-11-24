@@ -37,9 +37,11 @@ void main() {
   });
   group('A group of EC Key Tests', () {
     ECKeypair ecKeypair;
+    String message;
 
     setUp(() {
       ecKeypair = ECKeypair.fromRandom();
+      message = DateTime.now().millisecondsSinceEpoch.toRadixString(16);
     });
 
     test('Private Key to String and back', () {
@@ -52,6 +54,13 @@ void main() {
       String publicKeyString = ecKeypair.publicKey.toString();
       ECPublicKey publicKey = ECPublicKey.fromString(publicKeyString);
       expect(publicKey.toString(), publicKeyString);
+    });
+
+    test('Sign and Verify', () {
+      String signature = ecKeypair.privateKey.createSignature(message);
+      print(signature);
+      bool verified = ecKeypair.publicKey.verifySignature(message, signature);
+      expect(verified, isTrue);
     });
   });
 }

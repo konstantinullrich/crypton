@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:crypton/crypton.dart';
 import 'package:pointycastle/export.dart' as pointy;
 
+
 class ECPublicKey implements PublicKey {
   pointy.ECPublicKey _publicKey;
   static pointy.ECCurve_secp256k1 secp256k1 = pointy.ECCurve_secp256k1();
@@ -28,8 +29,12 @@ class ECPublicKey implements PublicKey {
   }
 
   @override
-  bool verifySignature(String message, String signature) {
-    // TODO: implement verifySignature
-    return null;
+  bool verifySignature(String message, String signatureString) {
+    BigInt r = BigInt.parse(signatureString.substring(0, 32), radix: 16);
+    BigInt s = BigInt.parse(signatureString.substring(32), radix: 16);
+    pointy.ECSignature signature = pointy.ECSignature(r, s);
+    pointy.ECDSASigner signer = pointy.ECDSASigner();
+    signer.init(false, pointy.PublicKeyParameter(this._publicKey));
+    return signer.verifySignature(utf8.encode(message), signature);
   }
 }
