@@ -35,4 +35,23 @@ void main() {
       expect(message, decrypted);
     });
   });
+  group('A group of EC Key Tests', () {
+    ECKeypair ecKeypair;
+
+    setUp(() {
+      ecKeypair = ECKeypair.fromRandom();
+    });
+
+    test('Private Key to String and back', () {
+      String privateKeyString = ecKeypair.privateKey.toString();
+      ECPrivateKey privateKey = ECPrivateKey.fromString(privateKeyString);
+      expect(privateKey.toString(), privateKeyString);
+    });
+
+    test('Public Key to string and back', () {
+      String publicKeyString = ecKeypair.publicKey.toString();
+      ECPublicKey publicKey = ECPublicKey.fromString(publicKeyString);
+      expect(publicKey.toString(), publicKeyString);
+    });
+  });
 }
