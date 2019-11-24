@@ -1,8 +1,9 @@
 name: crypton
 description: A simple Dart library for asymetric encryption and digial signatures
 version: 0.0.1
-# homepage: https://www.example.com
 author: Konstantin Ullrich <konstantinullrich12@gmail.com>
+repository: https://github.com/konstantinullrich/crypton
+issue_tracker: https://github.com/konstantinullrich/crypton/issues
 
 environment:
   sdk: '>=2.5.0 <3.0.0'
