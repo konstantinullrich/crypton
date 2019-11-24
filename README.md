@@ -1,2 +1,2 @@
 # Crypton
-A simple Dart library for asymetric encryption and digial signatures
+A simple Dart library for asymmetric encryption and digital signatures
