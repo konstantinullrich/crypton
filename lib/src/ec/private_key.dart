@@ -36,10 +36,4 @@ class ECPrivateKey implements PrivateKey {
 
   @override
   String toString() => this._privateKey.d.toRadixString(16);
-
-  @override
-  String decrypt(String message) {
-    // TODO: implement decrypt
-    return null;
-  }
 }

@@ -23,12 +23,6 @@ class ECPublicKey implements PublicKey {
   String toString() => base64Encode(this._publicKey.Q.getEncoded());
 
   @override
-  String encrypt(String message) {
-    // TODO: implement encrypt
-    return null;
-  }
-
-  @override
   bool verifySignature(String message, String signatureString) {
     int sigLength = (signatureString.length / 2).round();
     BigInt r = BigInt.parse(signatureString.substring(0, sigLength), radix: 16);
