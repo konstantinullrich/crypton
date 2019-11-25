@@ -40,6 +40,7 @@ void main() {
       expect(message, decrypted);
     });
   });
+
   group('A group of EC Key Tests', () {
     ECKeypair ecKeypair;
     String message;

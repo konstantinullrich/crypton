@@ -37,8 +37,8 @@ class RSAKeypair implements Keypair {
   }
 
   @override
-  PrivateKey get privateKey => this._privateKey;
+  RSAPrivateKey get privateKey => this._privateKey;
 
   @override
-  PublicKey get publicKey => this._publicKey;
+  RSAPublicKey get publicKey => this._publicKey;
 }
