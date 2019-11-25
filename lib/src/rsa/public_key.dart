@@ -5,13 +5,16 @@ import 'package:asn1lib/asn1lib.dart';
 import 'package:crypton/crypton.dart';
 import 'package:pointycastle/export.dart' as pointy;
 
+/// [PublicKey] using RSA Algorithm
 class RSAPublicKey implements PublicKey {
   pointy.RSAPublicKey _publicKey;
 
+  /// Create an [RSAPublicKey] for the given parameters.
   RSAPublicKey(BigInt modulus, BigInt exponent) {
     this._publicKey = pointy.RSAPublicKey(modulus, exponent);
   }
 
+  /// Create an [RSAPublicKey] from the given String.
   RSAPublicKey.fromString(String publicKeyString) {
     List<int> publicKeyDER = base64Decode(publicKeyString);
     ASN1Parser asn1Parser = ASN1Parser(publicKeyDER);
@@ -44,6 +47,7 @@ class RSAPublicKey implements PublicKey {
     return base64Encode(cipher.process(utf8.encode(message)));
   }
 
+  /// Export a [RSAPublic] key as String which can be reversed using [RSAPublicKey.fromString].
   @override
   String toString() {
     ASN1Sequence algorithmSeq = ASN1Sequence();

@@ -5,14 +5,17 @@ import 'package:crypton/crypton.dart';
 import 'package:asn1lib/asn1lib.dart';
 import 'package:pointycastle/export.dart' as pointy;
 
+/// [PrivateKey] using RSA Algorithm
 class RSAPrivateKey implements PrivateKey {
   pointy.RSAPrivateKey _privateKey;
   static pointy.ECCurve_secp256k1 secp256k1 = pointy.ECCurve_secp256k1();
 
+  /// Create an [RSAPrivateKey] for the given parameters.
   RSAPrivateKey(BigInt modulus, BigInt exponent, BigInt p, BigInt q) {
     this._privateKey = pointy.RSAPrivateKey(modulus, exponent, p, q);
   }
 
+  /// Create an [RSAPrivateKey] from the given String.
   RSAPrivateKey.fromString(String privateKeyString) {
     List<int> privateKeyDER = base64Decode(privateKeyString);
     ASN1Parser asn1Parser = ASN1Parser(privateKeyDER);
@@ -52,10 +55,12 @@ class RSAPrivateKey implements PrivateKey {
     return utf8.decode(text);
   }
 
+  /// Get the [RSAPublicKey] of the [RSAPrivateKey]
   @override
   RSAPublicKey get publicKey =>
       RSAPublicKey(_privateKey.modulus, BigInt.parse('65537'));
 
+  /// Export a [RSAPrivateKey] as String which can be reversed using [RSAPrivateKey.fromString].
   @override
   String toString() {
     ASN1Integer version = ASN1Integer(BigInt.from(0));
