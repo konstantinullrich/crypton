@@ -23,6 +23,11 @@ void main() {
       expect(publicKey.toString(), publicKeyString);
     });
 
+    test('Get Public Key from Privat Key', () {
+      String publicKeyString = rsaKeypair.privateKey.publicKey.toString();
+      expect(publicKeyString, rsaKeypair.publicKey.toString());
+    });
+
     test('Sign and Verify', () {
       String signature = rsaKeypair.privateKey.createSignature(message);
       bool verified = rsaKeypair.publicKey.verifySignature(message, signature);
@@ -54,6 +59,11 @@ void main() {
       String publicKeyString = ecKeypair.publicKey.toString();
       ECPublicKey publicKey = ECPublicKey.fromString(publicKeyString);
       expect(publicKey.toString(), publicKeyString);
+    });
+
+    test('Get Public Key from Privat Key', () {
+      String publicKeyString = ecKeypair.privateKey.publicKey.toString();
+      expect(publicKeyString, ecKeypair.publicKey.toString());
     });
 
     test('Sign and Verify', () {

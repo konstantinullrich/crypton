@@ -30,10 +30,11 @@ class ECPublicKey implements PublicKey {
 
   @override
   bool verifySignature(String message, String signatureString) {
-    BigInt r = BigInt.parse(signatureString.substring(0, 32), radix: 16);
-    BigInt s = BigInt.parse(signatureString.substring(32), radix: 16);
+    int sigLength = (signatureString.length / 2).round();
+    BigInt r = BigInt.parse(signatureString.substring(0, sigLength), radix: 16);
+    BigInt s = BigInt.parse(signatureString.substring(sigLength), radix: 16);
     pointy.ECSignature signature = pointy.ECSignature(r, s);
-    pointy.ECDSASigner signer = pointy.ECDSASigner();
+    pointy.Signer signer = pointy.Signer("SHA-256/DET-ECDSA");
     signer.init(false, pointy.PublicKeyParameter(this._publicKey));
     return signer.verifySignature(utf8.encode(message), signature);
   }
