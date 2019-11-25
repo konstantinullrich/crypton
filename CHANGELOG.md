@@ -1,3 +1,6 @@
+## 0.0.5
+- Update Code Format
+
 ## 0.0.4
 - Add ECKeypair with Random Key-generation
 - Add ECSignature creation and Signature validation

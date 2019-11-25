@@ -37,7 +37,6 @@ class RSAPublicKey implements PublicKey {
     return signer.verifySignature(utf8.encode(message), sig);
   }
 
-  @override
   String encrypt(String message) {
     pointy.RSAEngine cipher = pointy.RSAEngine();
     cipher.init(

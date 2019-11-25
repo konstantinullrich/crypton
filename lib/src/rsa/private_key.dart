@@ -44,7 +44,6 @@ class RSAPrivateKey implements PrivateKey {
     return base64Encode(sig.bytes);
   }
 
-  @override
   String decrypt(String message) {
     pointy.RSAEngine cipher = pointy.RSAEngine();
     cipher.init(false,

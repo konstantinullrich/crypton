@@ -7,7 +7,8 @@ void main() {
   String privateKeyString = ecKeypair.privateKey.toString();
   String publicKeyString = ecKeypair.publicKey.toString();
   String signature = ecKeypair.privateKey.createSignature(message);
-  bool verified = ecKeypair.privateKey.publicKey.verifySignature(message, signature);
+  bool verified =
+      ecKeypair.privateKey.publicKey.verifySignature(message, signature);
 
   print("Your Private Key\n $privateKeyString\n---");
   print("Your Public Key\n $publicKeyString\n---");
