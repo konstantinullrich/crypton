@@ -7,7 +7,10 @@ A simple Dart library for asymmetric encryption and digital signatures
 - Sign messages using RSA
 - Validate RSA-Signatures
 - Encrypt and Decrypt messages using RSA
-- Generate random a Keypair
+- Generate random a RSAKeypair
+- Sign messages using ECDSA
+- Validate ECDSA-Signatures
+- Generate random a ECKeypair
 
 ## See more
 To see more take a look at the examples
