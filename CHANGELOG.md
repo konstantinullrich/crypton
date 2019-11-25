@@ -1,3 +1,6 @@
+## 1.0.0
+- Update README, Ready for Version 1.0.0
+
 ## 0.0.5
 - Update Code Format
 
