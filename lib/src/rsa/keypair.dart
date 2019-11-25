@@ -13,21 +13,21 @@ class RSAKeypair implements Keypair {
     pointy.RSAKeyGeneratorParameters keyParams =
         pointy.RSAKeyGeneratorParameters(BigInt.parse('65537'), 2048, 12);
 
-    pointy.FortunaRandom secureRandom = pointy.FortunaRandom();
+    pointy.FortunaRandom fortunaRandom = pointy.FortunaRandom();
     Random random = Random.secure();
     List<int> seeds = [];
     for (int i = 0; i < 32; i++) {
       seeds.add(random.nextInt(255));
     }
-    secureRandom.seed(pointy.KeyParameter(Uint8List.fromList(seeds)));
+    fortunaRandom.seed(pointy.KeyParameter(Uint8List.fromList(seeds)));
 
-    pointy.ParametersWithRandom rngParams =
-        pointy.ParametersWithRandom(keyParams, secureRandom);
-    pointy.RSAKeyGenerator k = pointy.RSAKeyGenerator();
-    k.init(rngParams);
+    pointy.ParametersWithRandom randomParams =
+        pointy.ParametersWithRandom(keyParams, fortunaRandom);
+    pointy.RSAKeyGenerator generator = pointy.RSAKeyGenerator();
+    generator.init(randomParams);
 
     pointy.AsymmetricKeyPair<pointy.PublicKey, pointy.PrivateKey> pair =
-        k.generateKeyPair();
+        generator.generateKeyPair();
     pointy.RSAPublicKey publicKey = pair.publicKey;
     pointy.RSAPrivateKey privateKey = pair.privateKey;
 
@@ -37,8 +37,8 @@ class RSAKeypair implements Keypair {
   }
 
   @override
-  PrivateKey get privateKey => this._privateKey;
+  RSAPrivateKey get privateKey => this._privateKey;
 
   @override
-  PublicKey get publicKey => this._publicKey;
+  RSAPublicKey get publicKey => this._publicKey;
 }
