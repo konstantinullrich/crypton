@@ -55,7 +55,7 @@ class RSAPrivateKey implements PrivateKey {
 
   @override
   RSAPublicKey get publicKey =>
-      RSAPublicKey(_privateKey.modulus, _privateKey.exponent);
+      RSAPublicKey(_privateKey.modulus, BigInt.parse('65537'));
 
   @override
   String toString() {
