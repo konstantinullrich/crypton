@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:crypton/crypton.dart';
 import 'package:pointycastle/export.dart' as pointy;
 
-
 class ECPublicKey implements PublicKey {
   pointy.ECPublicKey _publicKey;
   static pointy.ECCurve_secp256k1 secp256k1 = pointy.ECCurve_secp256k1();
@@ -15,7 +14,8 @@ class ECPublicKey implements PublicKey {
   }
 
   ECPublicKey.fromString(String publicKeyString) {
-    pointy.ECPoint Q = secp256k1.curve.decodePoint(base64Decode(publicKeyString));
+    pointy.ECPoint Q =
+        secp256k1.curve.decodePoint(base64Decode(publicKeyString));
     this._publicKey = pointy.ECPublicKey(Q, secp256k1);
   }
 

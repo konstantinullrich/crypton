@@ -9,14 +9,14 @@ class ECKeypair implements Keypair {
 
   ECKeypair();
   ECKeypair.fromRandom() {
-
-    pointy.ECKeyGeneratorParameters keyParams = pointy.ECKeyGeneratorParameters(pointy.ECCurve_secp256k1());
+    pointy.ECKeyGeneratorParameters keyParams =
+        pointy.ECKeyGeneratorParameters(pointy.ECCurve_secp256k1());
 
     pointy.ECKeyGenerator generator = pointy.ECKeyGenerator();
     generator.init(withRandom(keyParams));
 
     pointy.AsymmetricKeyPair<pointy.PublicKey, pointy.PrivateKey> pair =
-    generator.generateKeyPair();
+        generator.generateKeyPair();
     pointy.ECPublicKey publicKey = pair.publicKey;
     pointy.ECPrivateKey privateKey = pair.privateKey;
 

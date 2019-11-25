@@ -1,8 +1,4 @@
-/// Support for doing something awesome.
-///
-/// More dartdocs go here.
 library crypton;
-
 
 export 'src/private_key.dart';
 export 'src/public_key.dart';
