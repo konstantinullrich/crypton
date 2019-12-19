@@ -3,11 +3,12 @@ import 'dart:convert';
 import 'package:crypton/crypton.dart';
 import 'package:pointycastle/export.dart' as pointy;
 
+/// [PublicKey] using EC Algorithm
 class ECPublicKey implements PublicKey {
   pointy.ECPublicKey _publicKey;
   static pointy.ECCurve_secp256k1 secp256k1 = pointy.ECCurve_secp256k1();
 
-  /// Create an [ECPublicKey] for the given parameters.
+  /// Create an [ECPublicKey] for the given coordinates.
   ECPublicKey(BigInt x, BigInt y) {
     pointy.ECCurve c = secp256k1.curve;
     pointy.ECPoint Q = c.createPoint(x, y, true);

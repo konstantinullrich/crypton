@@ -1,3 +1,6 @@
+## 1.0.2
+- Add Documentation
+
 ## 1.0.1
 - Add Documentation
 
