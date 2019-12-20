@@ -1,20 +1,20 @@
 import 'package:crypton/crypton.dart';
 
 void main() {
-  RSAKeypair rsaKeypair = RSAKeypair.fromRandom();
-  String message = DateTime.now().millisecondsSinceEpoch.toRadixString(16);
+  var rsaKeypair = RSAKeypair.fromRandom();
+  var message = DateTime.now().millisecondsSinceEpoch.toRadixString(16);
 
-  String privateKeyString = rsaKeypair.privateKey.toString();
-  String publicKeyString = rsaKeypair.publicKey.toString();
-  String signature = rsaKeypair.privateKey.createSignature(message);
-  bool verified = rsaKeypair.publicKey.verifySignature(message, signature);
+  var privateKeyString = rsaKeypair.privateKey.toString();
+  var publicKeyString = rsaKeypair.publicKey.toString();
+  var signature = rsaKeypair.privateKey.createSignature(message);
+  var verified = rsaKeypair.publicKey.verifySignature(message, signature);
 
-  print("Your Private Key\n $privateKeyString\n---");
-  print("Your Public Key\n $publicKeyString\n---");
+  print('Your Private Key\n $privateKeyString\n---');
+  print('Your Public Key\n $publicKeyString\n---');
 
   if (verified) {
-    print("The Signature is verified!");
+    print('The Signature is verified!');
   } else {
-    print("The Signature could not be verified!");
+    print('The Signature could not be verified!');
   }
 }

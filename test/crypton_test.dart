@@ -12,31 +12,31 @@ void main() {
     });
 
     test('Private Key to String and back', () {
-      String privateKeyString = rsaKeypair.privateKey.toString();
-      RSAPrivateKey privateKey = RSAPrivateKey.fromString(privateKeyString);
+      var privateKeyString = rsaKeypair.privateKey.toString();
+      var privateKey = RSAPrivateKey.fromString(privateKeyString);
       expect(privateKey.toString(), privateKeyString);
     });
 
     test('Public Key to string and back', () {
-      String publicKeyString = rsaKeypair.publicKey.toString();
-      RSAPublicKey publicKey = RSAPublicKey.fromString(publicKeyString);
+      var publicKeyString = rsaKeypair.publicKey.toString();
+      var publicKey = RSAPublicKey.fromString(publicKeyString);
       expect(publicKey.toString(), publicKeyString);
     });
 
     test('Get Public Key from Privat Key', () {
-      String publicKeyString = rsaKeypair.privateKey.publicKey.toString();
+      var publicKeyString = rsaKeypair.privateKey.publicKey.toString();
       expect(publicKeyString, rsaKeypair.publicKey.toString());
     });
 
     test('Sign and Verify', () {
-      String signature = rsaKeypair.privateKey.createSignature(message);
-      bool verified = rsaKeypair.publicKey.verifySignature(message, signature);
+      var signature = rsaKeypair.privateKey.createSignature(message);
+      var verified = rsaKeypair.publicKey.verifySignature(message, signature);
       expect(verified, isTrue);
     });
 
     test('Encrypt and Decrypt', () {
-      String encrypted = rsaKeypair.publicKey.encrypt(message);
-      String decrypted = rsaKeypair.privateKey.decrypt(encrypted);
+      var encrypted = rsaKeypair.publicKey.encrypt(message);
+      var decrypted = rsaKeypair.privateKey.decrypt(encrypted);
       expect(message, decrypted);
     });
   });
@@ -51,26 +51,25 @@ void main() {
     });
 
     test('Private Key to String and back', () {
-      String privateKeyString = ecKeypair.privateKey.toString();
-      ECPrivateKey privateKey = ECPrivateKey.fromString(privateKeyString);
+      var privateKeyString = ecKeypair.privateKey.toString();
+      var privateKey = ECPrivateKey.fromString(privateKeyString);
       expect(privateKey.toString(), privateKeyString);
     });
 
     test('Public Key to string and back', () {
-      String publicKeyString = ecKeypair.publicKey.toString();
-      ECPublicKey publicKey = ECPublicKey.fromString(publicKeyString);
+      var publicKeyString = ecKeypair.publicKey.toString();
+      var publicKey = ECPublicKey.fromString(publicKeyString);
       expect(publicKey.toString(), publicKeyString);
     });
 
     test('Get Public Key from Privat Key', () {
-      String publicKeyString = ecKeypair.privateKey.publicKey.toString();
+      var publicKeyString = ecKeypair.privateKey.publicKey.toString();
       expect(publicKeyString, ecKeypair.publicKey.toString());
     });
 
     test('Sign and Verify', () {
-      String signature = ecKeypair.privateKey.createSignature(message);
-      print(signature);
-      bool verified = ecKeypair.publicKey.verifySignature(message, signature);
+      var signature = ecKeypair.privateKey.createSignature(message);
+      var verified = ecKeypair.publicKey.verifySignature(message, signature);
       expect(verified, isTrue);
     });
   });

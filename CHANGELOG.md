@@ -1,3 +1,6 @@
+## 1.0.4
+- Styled Code using new Guidelines 
+
 ## 1.0.3
 - Fixed Typos in README
 

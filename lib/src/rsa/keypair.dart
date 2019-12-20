@@ -4,41 +4,40 @@ import 'dart:typed_data';
 import 'package:pointycastle/export.dart' as pointy;
 import 'package:crypton/crypton.dart';
 
+/// [Keypair] using RSA Algorithm
 class RSAKeypair implements Keypair {
   RSAPrivateKey _privateKey;
   RSAPublicKey _publicKey;
 
   RSAKeypair();
   RSAKeypair.fromRandom() {
-    pointy.RSAKeyGeneratorParameters keyParams =
+    var keyParams =
         pointy.RSAKeyGeneratorParameters(BigInt.parse('65537'), 2048, 12);
 
-    pointy.FortunaRandom fortunaRandom = pointy.FortunaRandom();
-    Random random = Random.secure();
-    List<int> seeds = [];
-    for (int i = 0; i < 32; i++) {
+    var fortunaRandom = pointy.FortunaRandom();
+    var random = Random.secure();
+    var seeds = [];
+    for (var i = 0; i < 32; i++) {
       seeds.add(random.nextInt(255));
     }
     fortunaRandom.seed(pointy.KeyParameter(Uint8List.fromList(seeds)));
 
-    pointy.ParametersWithRandom randomParams =
-        pointy.ParametersWithRandom(keyParams, fortunaRandom);
-    pointy.RSAKeyGenerator generator = pointy.RSAKeyGenerator();
+    var randomParams = pointy.ParametersWithRandom(keyParams, fortunaRandom);
+    var generator = pointy.RSAKeyGenerator();
     generator.init(randomParams);
 
-    pointy.AsymmetricKeyPair<pointy.PublicKey, pointy.PrivateKey> pair =
-        generator.generateKeyPair();
+    var pair = generator.generateKeyPair();
     pointy.RSAPublicKey publicKey = pair.publicKey;
     pointy.RSAPrivateKey privateKey = pair.privateKey;
 
-    this._publicKey = RSAPublicKey(publicKey.modulus, publicKey.exponent);
-    this._privateKey = RSAPrivateKey(
+    _publicKey = RSAPublicKey(publicKey.modulus, publicKey.exponent);
+    _privateKey = RSAPrivateKey(
         privateKey.modulus, privateKey.exponent, privateKey.p, privateKey.q);
   }
 
   @override
-  RSAPrivateKey get privateKey => this._privateKey;
+  RSAPrivateKey get privateKey => _privateKey;
 
   @override
-  RSAPublicKey get publicKey => this._publicKey;
+  RSAPublicKey get publicKey => _publicKey;
 }

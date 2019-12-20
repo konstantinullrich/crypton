@@ -1,21 +1,21 @@
 import 'package:crypton/crypton.dart';
 
 void main() {
-  ECKeypair ecKeypair = ECKeypair.fromRandom();
-  String message = DateTime.now().millisecondsSinceEpoch.toRadixString(16);
+  var ecKeypair = ECKeypair.fromRandom();
+  var message = DateTime.now().millisecondsSinceEpoch.toRadixString(16);
 
-  String privateKeyString = ecKeypair.privateKey.toString();
-  String publicKeyString = ecKeypair.publicKey.toString();
-  String signature = ecKeypair.privateKey.createSignature(message);
-  bool verified =
+  var privateKeyString = ecKeypair.privateKey.toString();
+  var publicKeyString = ecKeypair.publicKey.toString();
+  var signature = ecKeypair.privateKey.createSignature(message);
+  var verified =
       ecKeypair.privateKey.publicKey.verifySignature(message, signature);
 
-  print("Your Private Key\n $privateKeyString\n---");
-  print("Your Public Key\n $publicKeyString\n---");
+  print('Your Private Key\n $privateKeyString\n---');
+  print('Your Public Key\n $publicKeyString\n---');
 
   if (verified) {
-    print("The Signature is verified!");
+    print('The Signature is verified!');
   } else {
-    print("The Signature could not be verified!");
+    print('The Signature could not be verified!');
   }
 }
