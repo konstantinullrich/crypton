@@ -5,14 +5,20 @@ A simple Dart library for asymmetric encryption and digital signatures
 
 ## Features
 #### RSA
-- Generate random a RSAKeypair
-- Sign messages
+- Generate a random RSAKeypair
+- Sign Strings
 - Validate Signatures
-- Encrypt and Decrypt messages
+- Encrypt and Decrypt Strings
+
 #### EC
-- Generate random a ECKeypair
-- Sign messages
+- Generate a random ECKeypair
+- Sign Strings
 - Validate Signatures
 
 ## See more
 To see more take a look at the examples
+
+## Contact
+If you want a specific Feature implemented feel free to 
+create a Pull Request on the [Crypton GitHub](https://github.com/konstantinullrich/crypton)
+ or tweet at me [@konstiullrich](https://twitter.com/konstiullrich) (You can also tweet at me just to say "hi")
