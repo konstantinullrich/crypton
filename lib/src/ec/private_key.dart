@@ -19,6 +19,7 @@ class ECPrivateKey implements PrivateKey {
         BigInt.parse(privateKeyString, radix: 16), secp256k1);
   }
 
+  // TODO: Add Documentation
   @override
   String createSignature(String message) {
     var privateKeyParams = pointy.PrivateKeyParameter(_privateKey);
@@ -35,6 +36,10 @@ class ECPrivateKey implements PrivateKey {
     var Q = secp256k1.G * _privateKey.d;
     return ECPublicKey(Q.x.toBigInteger(), Q.y.toBigInteger());
   }
+
+  /// Export a [ECPrivateKey] as Pointy Castle ECPrivateKey
+  @override
+  pointy.ECPrivateKey get asPointyCastle => _privateKey;
 
   /// Export a [ECPrivateKey] as String which can be reversed using [ECPrivateKey.fromString].
   @override

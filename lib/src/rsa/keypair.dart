@@ -9,7 +9,10 @@ class RSAKeypair implements Keypair {
   RSAPrivateKey _privateKey;
   RSAPublicKey _publicKey;
 
-  RSAKeypair();
+  // TODO: Add Documentation
+  RSAKeypair(this._privateKey) : _publicKey = _privateKey.publicKey;
+
+  // TODO: Add Documentation
   RSAKeypair.fromRandom() {
     var keyParams =
         pointy.RSAKeyGeneratorParameters(BigInt.parse('65537'), 2048, 12);
@@ -35,9 +38,11 @@ class RSAKeypair implements Keypair {
         privateKey.modulus, privateKey.exponent, privateKey.p, privateKey.q);
   }
 
+  // TODO: Add Documentation
   @override
   RSAPrivateKey get privateKey => _privateKey;
 
+  // TODO: Add Documentation
   @override
   RSAPublicKey get publicKey => _publicKey;
 }

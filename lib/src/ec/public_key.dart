@@ -35,4 +35,8 @@ class ECPublicKey implements PublicKey {
   /// Export a [ECPublicKey] as String which can be reversed using [ECPublicKey.fromString].
   @override
   String toString() => base64Encode(_publicKey.Q.getEncoded());
+
+  /// Export a [ECPublicKey] as Pointy Castle ECPublicKey
+  @override
+  pointy.ECPublicKey get asPointyCastle => _publicKey;
 }
