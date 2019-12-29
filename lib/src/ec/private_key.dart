@@ -15,8 +15,8 @@ class ECPrivateKey implements PrivateKey {
 
   /// Create an [ECPrivateKey] from the given String.
   ECPrivateKey.fromString(String privateKeyString) {
-    _privateKey = pointy.ECPrivateKey(
-        BigInt.parse(privateKeyString, radix: 16), curve);
+    _privateKey =
+        pointy.ECPrivateKey(BigInt.parse(privateKeyString, radix: 16), curve);
   }
 
   // TODO: Add Documentation

@@ -1,5 +1,6 @@
 import 'package:pointycastle/export.dart' as pointy;
 
+/// Point on the elliptic Curve
 class ECPoint {
   final BigInt x;
   final BigInt y;
@@ -10,5 +11,6 @@ class ECPoint {
   ECPoint(this.x, this.y, [this.withCompression = false]);
 
   /// Export a [ECPoint] as Pointy Castle ECPoint
-  pointy.ECPoint get asPointyCastle => curve.curve.createPoint(x, y, withCompression);
+  pointy.ECPoint get asPointyCastle =>
+      curve.curve.createPoint(x, y, withCompression);
 }

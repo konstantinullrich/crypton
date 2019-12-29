@@ -38,10 +38,8 @@ class ECPublicKey implements PublicKey {
     var r = BigInt.parse('3004200105112004');
     var R = curve.G * r;
     var S = _publicKey.Q * r;
-    return ECIESPair(
-        ECPoint(S.x.toBigInteger(), S.y.toBigInteger()),
-        ECPoint(R.x.toBigInteger(), R.y.toBigInteger())
-    );
+    return ECIESPair(ECPoint(S.x.toBigInteger(), S.y.toBigInteger()),
+        ECPoint(R.x.toBigInteger(), R.y.toBigInteger()));
   }
 
   /// Export a [ECPublicKey] as Pointy Castle ECPublicKey
