@@ -6,17 +6,17 @@ import 'package:pointycastle/export.dart' as pointy;
 /// [PrivateKey] using EC Algorithm
 class ECPrivateKey implements PrivateKey {
   pointy.ECPrivateKey _privateKey;
-  static pointy.ECCurve_secp256k1 secp256k1 = pointy.ECCurve_secp256k1();
+  static final pointy.ECDomainParameters curve = pointy.ECCurve_secp256k1();
 
-  /// Create an [ECPrivateKey] for the given parameters.
+  /// Create an [ECPrivateKey] for the given d parameter.
   ECPrivateKey(BigInt d) {
-    _privateKey = pointy.ECPrivateKey(d, secp256k1);
+    _privateKey = pointy.ECPrivateKey(d, curve);
   }
 
   /// Create an [ECPrivateKey] from the given String.
   ECPrivateKey.fromString(String privateKeyString) {
     _privateKey = pointy.ECPrivateKey(
-        BigInt.parse(privateKeyString, radix: 16), secp256k1);
+        BigInt.parse(privateKeyString, radix: 16), curve);
   }
 
   // TODO: Add Documentation
@@ -30,10 +30,16 @@ class ECPrivateKey implements PrivateKey {
     return signature.r.toRadixString(16) + signature.s.toRadixString(16);
   }
 
+  /// Get the decryption key based of the [ECPoint] R
+  String getDecryptionKey(ECPoint R) {
+    var S = R.asPointyCastle * _privateKey.d;
+    return S.x.toString();
+  }
+
   /// Get the [ECPublicKey] of the [ECPrivateKey]
   @override
   ECPublicKey get publicKey {
-    var Q = secp256k1.G * _privateKey.d;
+    var Q = curve.G * _privateKey.d;
     return ECPublicKey(Q.x.toBigInteger(), Q.y.toBigInteger());
   }
 

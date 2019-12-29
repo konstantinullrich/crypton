@@ -30,7 +30,7 @@ class RSAPublicKey implements PublicKey {
         modulus.valueAsBigInteger, exponent.valueAsBigInteger);
   }
 
-  // TODO: Add Documentation
+  /// Verify the signature of a message signed with the associated [RSAPrivateKey]
   @override
   bool verifySignature(String message, String signature) {
     var signer = pointy.Signer('SHA-256/RSA');
@@ -41,7 +41,7 @@ class RSAPublicKey implements PublicKey {
     return signer.verifySignature(utf8.encode(message), sig);
   }
 
-  // TODO: Add Documentation
+  /// Encrypt a message which can only be decrypted using the associated [RSAPrivateKey]
   String encrypt(String message) {
     var cipher = pointy.RSAEngine();
     cipher.init(

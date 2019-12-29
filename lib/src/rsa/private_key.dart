@@ -48,7 +48,7 @@ class RSAPrivateKey implements PrivateKey {
     return base64Encode(sig.bytes);
   }
 
-  // TODO: Add Documentation
+  /// Decrypt a message which was encrypted using the associated [RSAPublicKey]
   String decrypt(String message) {
     var cipher = pointy.RSAEngine();
     cipher.init(

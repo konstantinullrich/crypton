@@ -2,12 +2,12 @@ import 'package:pointycastle/export.dart' as pointy;
 import 'package:crypton/crypton.dart';
 
 abstract class PrivateKey {
-  // TODO: Add Documentation
   PrivateKey();
 
   /// Create an [PrivateKey] from the given String.
   PrivateKey.fromString(String privateKeyString);
 
+  // TODO: Add Documentation
   String createSignature(String message) => null;
 
   /// Get the [PublicKey] of the [PrivateKey]

@@ -1,15 +1,15 @@
 import 'package:crypton/crypton.dart';
 
 abstract class Keypair {
-  // TODO: Add Documentation
+  /// Create a [Keypair] using an [PrivateKey]
   Keypair(PrivateKey privateKey);
 
-  // TODO: Add Documentation
+  /// Generate a random [Keypair]
   Keypair.fromRandom();
 
-  // TODO: Add Documentation
+  /// Get the [PublicKey] associated [PrivateKey]
   PublicKey get publicKey => null;
 
-  // TODO: Add Documentation
+  /// Get the [PrivateKey] associated [PublicKey]
   PrivateKey get privateKey => null;
 }
