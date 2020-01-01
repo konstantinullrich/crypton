@@ -13,4 +13,9 @@ class ECPoint {
   /// Export a [ECPoint] as Pointy Castle ECPoint
   pointy.ECPoint get asPointyCastle =>
       curve.curve.createPoint(x, y, withCompression);
+
+  ECPoint operator *(BigInt k){
+    var point = asPointyCastle * k;
+    return ECPoint(point.x.toBigInteger(), point.y.toBigInteger(), point.isCompressed);
+  }
 }

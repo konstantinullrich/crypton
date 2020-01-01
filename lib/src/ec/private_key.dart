@@ -32,7 +32,7 @@ class ECPrivateKey implements PrivateKey {
 
   /// Get the decryption key based of the [ECPoint] R
   String getDecryptionKey(ECPoint R) {
-    var S = R.asPointyCastle * _privateKey.d;
+    var S = R * _privateKey.d;
     return S.x.toString();
   }
 
