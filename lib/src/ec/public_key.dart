@@ -6,21 +6,21 @@ import 'package:pointycastle/export.dart' as pointy;
 /// [PublicKey] using EC Algorithm
 class ECPublicKey implements PublicKey {
   pointy.ECPublicKey _publicKey;
-  static pointy.ECCurve_secp256k1 secp256k1 = pointy.ECCurve_secp256k1();
+  static final pointy.ECDomainParameters curve = pointy.ECCurve_secp256k1();
 
   /// Create an [ECPublicKey] for the given coordinates.
   ECPublicKey(BigInt x, BigInt y) {
-    var c = secp256k1.curve;
-    var Q = c.createPoint(x, y, true);
-    _publicKey = pointy.ECPublicKey(Q, secp256k1);
+    var Q = ECPoint(x, y, true);
+    _publicKey = pointy.ECPublicKey(Q.asPointyCastle, curve);
   }
 
   /// Create an [ECPublicKey] from the given String.
   ECPublicKey.fromString(String publicKeyString) {
-    var Q = secp256k1.curve.decodePoint(base64Decode(publicKeyString));
-    _publicKey = pointy.ECPublicKey(Q, secp256k1);
+    var Q = curve.curve.decodePoint(base64Decode(publicKeyString));
+    _publicKey = pointy.ECPublicKey(Q, curve);
   }
 
+  /// Verify the signature of a message signed with the associated [ECPrivateKey]
   @override
   bool verifySignature(String message, String signatureString) {
     var sigLength = (signatureString.length / 2).round();
@@ -31,6 +31,20 @@ class ECPublicKey implements PublicKey {
     signer.init(false, pointy.PublicKeyParameter(_publicKey));
     return signer.verifySignature(utf8.encode(message), signature);
   }
+
+  /// Generate a [ECIESPair] based on the [ECPublicKey]
+  ECIESPair get encryptionKeypair {
+    // TODO: Generate r randomly
+    var r = BigInt.parse('3004200105112004');
+    var R = curve.G * r;
+    var S = _publicKey.Q * r;
+    return ECIESPair(ECPoint(S.x.toBigInteger(), S.y.toBigInteger()),
+        ECPoint(R.x.toBigInteger(), R.y.toBigInteger()));
+  }
+
+  /// Export a [ECPublicKey] as Pointy Castle ECPublicKey
+  @override
+  pointy.ECPublicKey get asPointyCastle => _publicKey;
 
   /// Export a [ECPublicKey] as String which can be reversed using [ECPublicKey.fromString].
   @override

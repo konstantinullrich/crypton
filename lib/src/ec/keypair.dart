@@ -8,7 +8,10 @@ class ECKeypair implements Keypair {
   ECPrivateKey _privateKey;
   ECPublicKey _publicKey;
 
-  ECKeypair();
+  /// Create a [ECKeypair] using an [ECPrivateKey]
+  ECKeypair(this._privateKey) : _publicKey = _privateKey.publicKey;
+
+  /// Generate a random [ECKeypair]
   ECKeypair.fromRandom() {
     var keyParams = pointy.ECKeyGeneratorParameters(pointy.ECCurve_secp256k1());
 
@@ -24,9 +27,11 @@ class ECKeypair implements Keypair {
     _privateKey = ECPrivateKey(privateKey.d);
   }
 
-  @override
-  ECPrivateKey get privateKey => _privateKey;
-
+  /// Get the [ECPublicKey] associated [ECPrivateKey]
   @override
   ECPublicKey get publicKey => _publicKey;
+
+  /// Get the [ECPrivateKey] associated [ECPublicKey]
+  @override
+  ECPrivateKey get privateKey => _privateKey;
 }

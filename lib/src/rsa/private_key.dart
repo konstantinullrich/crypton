@@ -37,6 +37,7 @@ class RSAPrivateKey implements PrivateKey {
         q.valueAsBigInteger);
   }
 
+  // TODO: Add Documentation
   @override
   String createSignature(String message) {
     var signer = pointy.Signer('SHA-256/RSA');
@@ -47,6 +48,7 @@ class RSAPrivateKey implements PrivateKey {
     return base64Encode(sig.bytes);
   }
 
+  /// Decrypt a message which was encrypted using the associated [RSAPublicKey]
   String decrypt(String message) {
     var cipher = pointy.RSAEngine();
     cipher.init(
@@ -59,6 +61,10 @@ class RSAPrivateKey implements PrivateKey {
   @override
   RSAPublicKey get publicKey =>
       RSAPublicKey(_privateKey.modulus, BigInt.parse('65537'));
+
+  /// Export a [RSAPrivateKey] as Pointy Castle RSAPrivateKey
+  @override
+  pointy.RSAPrivateKey get asPointyCastle => _privateKey;
 
   /// Export a [RSAPrivateKey] as String which can be reversed using [RSAPrivateKey.fromString].
   @override
