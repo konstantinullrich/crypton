@@ -33,7 +33,8 @@ class ECPublicKey implements PublicKey {
   }
 
   /// Get [ECPoint] Q, which is the Public Point
-  ECPoint get Q => ECPoint(_publicKey.Q.x.toBigInteger(), _publicKey.Q.y.toBigInteger(), _publicKey.Q.isCompressed);
+  ECPoint get Q => ECPoint(_publicKey.Q.x.toBigInteger(),
+      _publicKey.Q.y.toBigInteger(), _publicKey.Q.isCompressed);
 
   /// Export a [ECPublicKey] as Pointy Castle ECPublicKey
   @override
