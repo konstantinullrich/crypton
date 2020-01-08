@@ -8,7 +8,7 @@ void main() {
   var message = DateTime.now().millisecondsSinceEpoch.toRadixString(16);
 
   var encryptionKeypair = ecKeypair.publicKey.encryptionKeypair;
- var encryptionKeyFromR =
+  var encryptionKeyFromR =
       ecKeypair.privateKey.getDecryptionKey(encryptionKeypair.R);
 
   print('Encryption Key from Public Key: ${encryptionKeypair.encryptionKey}\n'
