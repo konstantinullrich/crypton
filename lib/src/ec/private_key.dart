@@ -37,6 +37,9 @@ class ECPrivateKey implements PrivateKey {
     return ECPublicKey(Q.x.toBigInteger(), Q.y.toBigInteger());
   }
 
+  /// Get the d Parameter as [BigInt]
+  BigInt get d => _privateKey.d;
+
   /// Export a [ECPrivateKey] as Pointy Castle ECPrivateKey
   @override
   pointy.ECPrivateKey get asPointyCastle => _privateKey;

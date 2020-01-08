@@ -32,6 +32,9 @@ class ECPublicKey implements PublicKey {
     return signer.verifySignature(utf8.encode(message), signature);
   }
 
+  /// Get [ECPoint] Q, which is the Public Point
+  ECPoint get Q => ECPoint(_publicKey.Q.x.toBigInteger(), _publicKey.Q.y.toBigInteger(), _publicKey.Q.isCompressed);
+
   /// Export a [ECPublicKey] as Pointy Castle ECPublicKey
   @override
   pointy.ECPublicKey get asPointyCastle => _publicKey;
