@@ -19,7 +19,7 @@ class RSAKeypair implements Keypair {
 
     var fortunaRandom = pointy.FortunaRandom();
     var random = Random.secure();
-    var seeds = [];
+    var seeds = <int>[];
     for (var i = 0; i < 32; i++) {
       seeds.add(random.nextInt(255));
     }

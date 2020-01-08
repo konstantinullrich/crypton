@@ -28,3 +28,4 @@ export 'src/ec/public_key.dart';
 export 'src/ec/keypair.dart';
 export 'src/ec/ecpoint.dart';
 export 'src/ec/eciespair.dart';
+export 'src/ec/encryptionpair.dart';
