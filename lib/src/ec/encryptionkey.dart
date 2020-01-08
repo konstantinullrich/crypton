@@ -1,6 +1,6 @@
 import 'package:crypton/crypton.dart';
 
-class ECEncryptionKey{
+class ECEncryptionKey {
   final ECPrivateKey _privateKey;
   final ECPublicKey _publicKey;
 

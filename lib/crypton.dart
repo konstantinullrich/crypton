@@ -24,3 +24,4 @@ export 'src/ec/private_key.dart';
 export 'src/ec/public_key.dart';
 export 'src/ec/keypair.dart';
 export 'src/ec/ecpoint.dart';
+export 'src/ec/encryptionkey.dart';
