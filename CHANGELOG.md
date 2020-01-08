@@ -1,4 +1,7 @@
 ## 1.0.4
+- Add more Documentation and fix a small bug
+
+## 1.0.4
 - Styled Code using new Guidelines 
 
 ## 1.0.3
