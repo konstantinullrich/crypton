@@ -30,6 +30,12 @@ class ECPrivateKey implements PrivateKey {
     return signature.r.toRadixString(16) + signature.s.toRadixString(16);
   }
 
+  /// Get the decryption key based of the [ECPoint] R
+  String getDecryptionKey(ECPoint R) {
+    var S = R * _privateKey.d;
+    return S.x.toString();
+  }
+
   /// Get the [ECPublicKey] of the [ECPrivateKey]
   @override
   ECPublicKey get publicKey {

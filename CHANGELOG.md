@@ -1,4 +1,4 @@
-## 1.0.4
+## 1.0.5
 - Add more Documentation and fix a small bug
 
 ## 1.0.4
