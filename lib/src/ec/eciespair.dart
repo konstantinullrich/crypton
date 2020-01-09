@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:crypton/crypton.dart';
+import 'package:crypto/crypto.dart' as crypto;
 
 class ECIESPair {
   final ECPoint _S;
@@ -11,5 +14,9 @@ class ECIESPair {
   ECPoint get R => _R;
 
   /// Use this Key and an symmetric cipher of your choice to encrypt your data
-  String get encryptionKey => _S.x.toString();
+  String get encryptionKey {
+    var rawKey = _S.x;
+    var digest = crypto.sha256.convert(utf8.encode(rawKey.toString()));
+    return digest.toString();
+  }
 }

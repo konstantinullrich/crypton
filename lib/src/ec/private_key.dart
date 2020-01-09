@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:crypton/crypton.dart';
+import 'package:crypto/crypto.dart' as crypto;
 import 'package:pointycastle/export.dart' as pointy;
 
 /// [PrivateKey] using EC Algorithm
@@ -33,7 +34,8 @@ class ECPrivateKey implements PrivateKey {
   /// Get the decryption key based of the [ECPoint] R
   String getDecryptionKey(ECPoint R) {
     var S = R * _privateKey.d;
-    return S.x.toString();
+    var digest = crypto.sha256.convert(utf8.encode(S.x.toString()));
+    return digest.toString();
   }
 
   /// Get the [ECPublicKey] of the [ECPrivateKey]
