@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:crypton/crypton.dart';
+import 'package:crypto/crypto.dart' as crypto;
 
 class ECEncryptionKey {
   final ECPrivateKey _privateKey;
@@ -9,5 +12,9 @@ class ECEncryptionKey {
 
   /// Get an encryption key, which can be used for symmetric encryption
   @override
-  String toString() => (_publicKey.Q * _privateKey.d).x.toString();
+  String toString() {
+    var rawKey = (_publicKey.Q * _privateKey.d).x;
+    var digest = crypto.sha256.convert(utf8.encode(rawKey.toString()));
+    return digest.toString();
+  }
 }
