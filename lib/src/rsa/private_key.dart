@@ -47,7 +47,6 @@ class RSAPrivateKey implements PrivateKey {
     return RSAPrivateKey.fromString(privateKeyString);
   }
 
-
   // TODO: Add Documentation
   @override
   String createSignature(String message) {
