@@ -1,3 +1,6 @@
+## 1.0.8
+- Update dependencies
+
 ## 1.0.7
 - Add toPem and fromPem to RSAPublicKey
 - Add toPem and fromPem to RSAPrivateKey
