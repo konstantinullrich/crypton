@@ -122,7 +122,7 @@ class RSAPrivateKey implements PrivateKey {
   }
 
   /// Export a [RSAPrivateKey] as PEM String which can be reversed using [RSAPrivateKey.fromPEM].
-  String toPem() {
+  String toPEM() {
     return '-----BEGIN PRIVATE KEY-----\r\n${toString()}\r\n-----END PRIVATE KEY-----';
   }
 }
