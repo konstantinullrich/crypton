@@ -28,6 +28,18 @@ void main() {
       expect(publicKeyString, rsaKeypair.publicKey.toString());
     });
 
+    test('Get Public Key from PEM-String', () {
+      var publicKeyString = rsaKeypair.publicKey.toString();
+      var publicKey = RSAPublicKey.fromPEM(rsaKeypair.publicKey.toPEM());
+      expect(publicKey.toString(), publicKeyString);
+    });
+
+    test('Get Private Key from PEM-String', () {
+      var privateKeyString = rsaKeypair.privateKey.toString();
+      var privateKey = RSAPrivateKey.fromPEM(rsaKeypair.privateKey.toPEM());
+      expect(privateKey.toString(), privateKeyString);
+    });
+
     test('Sign and Verify', () {
       var signature = rsaKeypair.privateKey.createSignature(message);
       var verified = rsaKeypair.publicKey.verifySignature(message, signature);

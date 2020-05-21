@@ -8,7 +8,6 @@ import 'package:pointycastle/export.dart' as pointy;
 /// [PrivateKey] using RSA Algorithm
 class RSAPrivateKey implements PrivateKey {
   pointy.RSAPrivateKey _privateKey;
-  static pointy.ECCurve_secp256k1 secp256k1 = pointy.ECCurve_secp256k1();
 
   /// Create an [RSAPrivateKey] for the given parameters.
   RSAPrivateKey(BigInt modulus, BigInt exponent, BigInt p, BigInt q) {
@@ -36,6 +35,18 @@ class RSAPrivateKey implements PrivateKey {
         p.valueAsBigInteger,
         q.valueAsBigInteger);
   }
+
+  /// Create an [RSAPrivateKey] from the given PEM-String.
+  static RSAPrivateKey fromPEM(String pemString) {
+    final rows = pemString.split(RegExp(r'\r\n?|\n'));
+    final privateKeyString = rows
+        .skipWhile((row) => row.startsWith('-----BEGIN'))
+        .takeWhile((row) => !row.startsWith('-----END'))
+        .map((row) => row.trim())
+        .join('');
+    return RSAPrivateKey.fromString(privateKeyString);
+  }
+
 
   // TODO: Add Documentation
   @override
@@ -108,5 +119,10 @@ class RSAPrivateKey implements PrivateKey {
     topLevelSeq.add(algorithmSeq);
     topLevelSeq.add(publicKeySeqOctetString);
     return base64.encode(topLevelSeq.encodedBytes);
+  }
+
+  /// Export a [RSAPrivateKey] as PEM String which can be reversed using [RSAPrivateKey.fromPEM].
+  String toPEM() {
+    return '-----BEGIN PRIVATE KEY-----\r\n${toString()}\r\n-----END PRIVATE KEY-----';
   }
 }

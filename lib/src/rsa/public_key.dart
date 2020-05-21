@@ -30,6 +30,17 @@ class RSAPublicKey implements PublicKey {
         modulus.valueAsBigInteger, exponent.valueAsBigInteger);
   }
 
+  /// Create an [RSAPublicKey] from the given PEM-String.
+  static RSAPublicKey fromPEM(String pemString) {
+    final rows = pemString.split(RegExp(r'\r\n?|\n'));
+    final privateKeyString = rows
+        .skipWhile((row) => row.startsWith('-----BEGIN'))
+        .takeWhile((row) => !row.startsWith('-----END'))
+        .map((row) => row.trim())
+        .join('');
+    return RSAPublicKey.fromString(privateKeyString);
+  }
+
   /// Verify the signature of a message signed with the associated [RSAPrivateKey]
   @override
   bool verifySignature(String message, String signature) {
@@ -73,5 +84,10 @@ class RSAPublicKey implements PublicKey {
     topLevelSeq.add(algorithmSeq);
     topLevelSeq.add(publicKeySeqBitString);
     return base64.encode(topLevelSeq.encodedBytes);
+  }
+
+  /// Export a [RSAPublicKey] as PEM String which can be reversed using [RSAPublicKey.fromPEM].
+  String toPEM() {
+    return '-----BEGIN PUBLIC KEY-----\r\n${toString()}\r\n-----END PUBLIC KEY-----';
   }
 }

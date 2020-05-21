@@ -19,7 +19,6 @@ export 'src/rsa/keypair.dart';
 /// [ECPublicKey] can be used to verify signatures using ECC
 /// [ECKeypair] is used to generate a pair of a [ECPrivateKey] and a [ECPublicKey]
 /// [ECPoint] is a Point on the elliptic Curve
-// TODO: Add Documentation
 export 'src/ec/private_key.dart';
 export 'src/ec/public_key.dart';
 export 'src/ec/keypair.dart';
