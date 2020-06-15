@@ -1,3 +1,7 @@
+## 1.0.9
+- The length of the RSAPrivateKey is now adjustable thanks to [melewetwo](https://github.com/melewetwo)
+- Added more documentation
+
 ## 1.0.8
 - Update dependencies
 

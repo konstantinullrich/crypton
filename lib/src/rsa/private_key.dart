@@ -47,7 +47,7 @@ class RSAPrivateKey implements PrivateKey {
     return RSAPrivateKey.fromString(privateKeyString);
   }
 
-  // TODO: Add Documentation
+  /// Sign an message which can be verified using the associated [RSAPublicKey]
   @override
   String createSignature(String message) {
     var signer = pointy.Signer('SHA-256/RSA');

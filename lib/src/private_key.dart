@@ -7,7 +7,7 @@ abstract class PrivateKey {
   /// Create an [PrivateKey] from the given String.
   PrivateKey.fromString(String privateKeyString);
 
-  // TODO: Add Documentation
+  /// Sign an message which can be verified using the associated [PublicKey]
   String createSignature(String message) => null;
 
   /// Get the [PublicKey] of the [PrivateKey]

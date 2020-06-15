@@ -19,7 +19,7 @@ class ECPrivateKey implements PrivateKey {
         pointy.ECPrivateKey(BigInt.parse(privateKeyString, radix: 16), curve);
   }
 
-  // TODO: Add Documentation
+  /// Sign an message which can be verified using the associated [ECPublicKey]
   @override
   String createSignature(String message) {
     var privateKeyParams = pointy.PrivateKeyParameter(_privateKey);

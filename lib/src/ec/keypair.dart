@@ -11,7 +11,7 @@ class ECKeypair implements Keypair {
   /// Create a [ECKeypair] using an [ECPrivateKey]
   ECKeypair(this._privateKey) : _publicKey = _privateKey.publicKey;
 
-  /// Generate a random [ECKeypair]
+  /// Generate a random [ECKeypair] on the secp256k1-Curve
   ECKeypair.fromRandom() {
     var keyParams = pointy.ECKeyGeneratorParameters(pointy.ECCurve_secp256k1());
 

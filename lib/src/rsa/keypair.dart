@@ -12,7 +12,7 @@ class RSAKeypair implements Keypair {
   /// Create a [RSAKeypair] using an [RSAPrivateKey]
   RSAKeypair(this._privateKey) : _publicKey = _privateKey.publicKey;
 
-  /// Generate a random [RSAKeypair]
+  /// Generate a random [RSAKeypair] with a default key size of 4096 bit
   RSAKeypair.fromRandom({int keySize = 4096}) {
     var keyParams =
         pointy.RSAKeyGeneratorParameters(BigInt.parse('65537'), keySize, 12);
