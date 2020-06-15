@@ -13,9 +13,9 @@ class RSAKeypair implements Keypair {
   RSAKeypair(this._privateKey) : _publicKey = _privateKey.publicKey;
 
   /// Generate a random [RSAKeypair]
-  RSAKeypair.fromRandom() {
+  RSAKeypair.fromRandom({int keySize=2048}) {
     var keyParams =
-        pointy.RSAKeyGeneratorParameters(BigInt.parse('65537'), 2048, 12);
+        pointy.RSAKeyGeneratorParameters(BigInt.parse('65537'), keySize, 12);
 
     var fortunaRandom = pointy.FortunaRandom();
     var random = Random.secure();
