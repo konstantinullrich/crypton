@@ -5,7 +5,7 @@ abstract class Keypair {
   Keypair(PrivateKey privateKey);
 
   /// Generate a random [Keypair]
-  Keypair.fromRandom({int keySize});
+  Keypair.fromRandom();
 
   /// Get the [PublicKey] associated [PrivateKey]
   PublicKey get publicKey => null;
