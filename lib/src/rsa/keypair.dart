@@ -13,7 +13,7 @@ class RSAKeypair implements Keypair {
   RSAKeypair(this._privateKey) : _publicKey = _privateKey.publicKey;
 
   /// Generate a random [RSAKeypair]
-  RSAKeypair.fromRandom({int keySize=4096}) {
+  RSAKeypair.fromRandom({int keySize = 4096}) {
     var keyParams =
         pointy.RSAKeyGeneratorParameters(BigInt.parse('65537'), keySize, 12);
 
