@@ -15,7 +15,7 @@ void main() {
   print('Decrypted Message\n $decrypted\n---');
 
   if (decrypted == message) {
-    print('The Message was successfuly decrypted!');
+    print('The Message was successfully decrypted!');
   } else {
     print('Failed to decrypted the Message!');
   }

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:crypton/crypton.dart';
 import 'package:pointycastle/export.dart' as pointy;
@@ -19,15 +20,29 @@ class ECPrivateKey implements PrivateKey {
         pointy.ECPrivateKey(BigInt.parse(privateKeyString, radix: 16), curve);
   }
 
-  /// Sign an message which can be verified using the associated [ECPublicKey]
+  /// Sign an message with SHA-256 which can be verified using the associated [ECPublicKey]
   @override
-  String createSignature(String message) {
-    var privateKeyParams = pointy.PrivateKeyParameter(_privateKey);
-    var signer = pointy.Signer('SHA-256/DET-ECDSA');
+  @Deprecated('Use createSHA256Signature for creating SHA-256 signatures')
+  String createSignature(String message) =>
+      utf8.decode(createSHA256Signature(utf8.encode(message)));
+
+  /// Sign an message with SHA-256 which can be verified using the associated [ECPublicKey]
+  @override
+  Uint8List createSHA256Signature(Uint8List message) =>
+      _createSignature(message, 'SHA-256/DET-ECDSA');
+
+  /// Sign an message with SHA-512 which can be verified using the associated [ECPublicKey]
+  @override
+  Uint8List createSHA512Signature(Uint8List message) =>
+      _createSignature(message, 'SHA-512/DET-ECDSA');
+
+  Uint8List _createSignature(Uint8List message, String algorithm) {
+    var signer = pointy.Signer(algorithm);
+    pointy.AsymmetricKeyParameter<pointy.ECPrivateKey> privateKeyParams =
+        pointy.PrivateKeyParameter(_privateKey);
     signer.init(true, privateKeyParams);
-    pointy.ECSignature signature =
-        signer.generateSignature(utf8.encode(message));
-    return signature.r.toRadixString(16) + signature.s.toRadixString(16);
+    pointy.ECSignature sig = signer.generateSignature(message);
+    return utf8.encode(sig.r.toRadixString(16) + sig.s.toRadixString(16));
   }
 
   /// Get the [ECPublicKey] of the [ECPrivateKey]
