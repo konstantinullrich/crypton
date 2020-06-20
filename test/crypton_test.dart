@@ -1,14 +1,18 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:crypton/crypton.dart';
 import 'package:test/test.dart';
 
 void main() {
   group('A group of RSA Key Tests', () {
     RSAKeypair rsaKeypair;
-    String message;
+    Uint8List message;
 
     setUp(() {
-      rsaKeypair = RSAKeypair.fromRandom();
-      message = DateTime.now().millisecondsSinceEpoch.toRadixString(16);
+      rsaKeypair = RSAKeypair.fromRandom(keySize: 2048);
+      message =
+          utf8.encode(DateTime.now().millisecondsSinceEpoch.toRadixString(16));
     });
 
     test('Private Key to String and back', () {
@@ -40,26 +44,65 @@ void main() {
       expect(privateKey.toString(), privateKeyString);
     });
 
-    test('Sign and Verify', () {
-      var signature = rsaKeypair.privateKey.createSignature(message);
-      var verified = rsaKeypair.publicKey.verifySignature(message, signature);
+    test('Sign and Verify SHA-256', () {
+      var signature = rsaKeypair.privateKey.createSHA256Signature(message);
+      var verified =
+          rsaKeypair.publicKey.verifySHA256Signature(message, signature);
+      expect(verified, isTrue);
+    });
+    test('Sign and Verify SHA-512', () {
+      var signature = rsaKeypair.privateKey.createSHA512Signature(message);
+      var verified =
+          rsaKeypair.publicKey.verifySHA512Signature(message, signature);
       expect(verified, isTrue);
     });
 
-    test('Encrypt and Decrypt', () {
-      var encrypted = rsaKeypair.publicKey.encrypt(message);
-      var decrypted = rsaKeypair.privateKey.decrypt(encrypted);
-      expect(message, decrypted);
+    test('Encrypt and Decrypt data', () {
+      var encrypted = rsaKeypair.publicKey.encryptData(message);
+      var decrypted = rsaKeypair.privateKey.decryptData(encrypted);
+      expect(decrypted, message);
+    });
+
+    test('Encrypt and Decrypt string', () {
+      var encrypted = rsaKeypair.publicKey.encrypt(utf8.decode(message));
+      var decrypted = utf8.encode(rsaKeypair.privateKey.decrypt(encrypted));
+      expect(decrypted, message);
+    });
+
+    test('Private key PEM-String is formatted', () {
+      expect(
+          (rsaKeypair.privateKey
+                  .toFormattedPEM()
+                  .split('\n')
+                  .map((l) => l.length)
+                  .toList()
+                    ..sort())
+              .last,
+          64);
+    });
+
+    test('Public key PEM-String is formatted', () {
+      expect(
+          (rsaKeypair.publicKey
+                  .toFormattedPEM()
+                  .split('\n')
+                  .map((l) => l.length)
+                  .toList()
+                    ..sort())
+              .last,
+          64);
+      expect(rsaKeypair.publicKey.toFormattedPEM().length, 450);
     });
   });
 
   group('A group of EC Key Tests', () {
     ECKeypair ecKeypair;
-    String message;
+    Uint8List message;
 
     setUp(() {
       ecKeypair = ECKeypair.fromRandom();
-      message = DateTime.now().millisecondsSinceEpoch.toRadixString(16);
+      message =
+          utf8.encode(DateTime.now().millisecondsSinceEpoch.toRadixString(16));
     });
 
     test('Private Key to String and back', () {
@@ -79,9 +122,17 @@ void main() {
       expect(publicKeyString, ecKeypair.publicKey.toString());
     });
 
-    test('Sign and Verify', () {
-      var signature = ecKeypair.privateKey.createSignature(message);
-      var verified = ecKeypair.publicKey.verifySignature(message, signature);
+    test('Sign and Verify SHA-256', () {
+      var signature = ecKeypair.privateKey.createSHA256Signature(message);
+      var verified =
+          ecKeypair.publicKey.verifySHA256Signature(message, signature);
+      expect(verified, isTrue);
+    });
+
+    test('Sign and Verify SHA-512', () {
+      var signature = ecKeypair.privateKey.createSHA512Signature(message);
+      var verified =
+          ecKeypair.publicKey.verifySHA512Signature(message, signature);
       expect(verified, isTrue);
     });
   });

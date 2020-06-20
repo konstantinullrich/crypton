@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:crypton/crypton.dart';
 import 'package:pointycastle/export.dart' as pointy;
@@ -20,16 +21,37 @@ class ECPublicKey implements PublicKey {
     _publicKey = pointy.ECPublicKey(Q, curve);
   }
 
-  /// Verify the signature of a message signed with the associated [ECPrivateKey]
+  /// Verify the signature of a SHA256-hashed message signed with the associated [ECPrivateKey]
+  @Deprecated('For SHA256 signature verification use verifySHA256Signature')
   @override
-  bool verifySignature(String message, String signatureString) {
+  bool verifySignature(String message, String signature) =>
+      verifySHA256Signature(utf8.encode(message), utf8.encode(signature));
+
+  /// Verify the signature of a SHA256-hashed message signed with the associated [ECPrivateKey]
+  @override
+  bool verifySHA256Signature(Uint8List message, Uint8List signature) =>
+      _verifySignature(message, signature, 'SHA-256/DET-ECDSA');
+
+  /// Verify the signature of a SHA512-hashed message signed with the associated [ECPrivateKey]
+  @override
+  bool verifySHA512Signature(Uint8List message, Uint8List signature) =>
+      _verifySignature(message, signature, 'SHA-512/DET-ECDSA');
+
+  bool _verifySignature(
+      Uint8List message, Uint8List signatureString, String algorithm) {
     var sigLength = (signatureString.length / 2).round();
-    var r = BigInt.parse(signatureString.substring(0, sigLength), radix: 16);
-    var s = BigInt.parse(signatureString.substring(sigLength), radix: 16);
+    var r = BigInt.parse(
+      utf8.decode(signatureString.sublist(0, sigLength)),
+      radix: 16,
+    );
+    var s = BigInt.parse(
+      utf8.decode(signatureString.sublist(sigLength)),
+      radix: 16,
+    );
     var signature = pointy.ECSignature(r, s);
-    var signer = pointy.Signer('SHA-256/DET-ECDSA');
+    var signer = pointy.Signer(algorithm);
     signer.init(false, pointy.PublicKeyParameter(_publicKey));
-    return signer.verifySignature(utf8.encode(message), signature);
+    return signer.verifySignature(message, signature);
   }
 
   /// Get [ECPoint] Q, which is the Public Point

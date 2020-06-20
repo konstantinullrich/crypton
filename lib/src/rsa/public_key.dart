@@ -41,23 +41,42 @@ class RSAPublicKey implements PublicKey {
     return RSAPublicKey.fromString(privateKeyString);
   }
 
-  /// Verify the signature of a message signed with the associated [RSAPrivateKey]
+  /// Verify the signature of a SHA256-hashed message signed with the associated [RSAPrivateKey]
+  @Deprecated('For SHA256 signature verification use verifySHA256Signature')
   @override
-  bool verifySignature(String message, String signature) {
-    var signer = pointy.Signer('SHA-256/RSA');
+  bool verifySignature(String message, String signature) =>
+      verifySHA256Signature(utf8.encode(message), utf8.encode(signature));
+
+  /// Verify the signature of a SHA256-hashed message signed with the associated [RSAPrivateKey]
+  @override
+  bool verifySHA256Signature(Uint8List message, Uint8List signature) =>
+      _verifySignature(message, signature, 'SHA-256/RSA');
+
+  /// Verify the signature of a SHA512-hashed message signed with the associated [RSAPrivateKey]
+  @override
+  bool verifySHA512Signature(Uint8List message, Uint8List signature) =>
+      _verifySignature(message, signature, 'SHA-512/RSA');
+
+  bool _verifySignature(
+      Uint8List message, Uint8List signature, String algorithm) {
+    var signer = pointy.Signer(algorithm);
     pointy.AsymmetricKeyParameter<pointy.RSAPublicKey> publicKeyParams =
         pointy.PublicKeyParameter(_publicKey);
-    var sig = pointy.RSASignature(base64Decode(signature));
+    var sig = pointy.RSASignature(signature);
     signer.init(false, publicKeyParams);
-    return signer.verifySignature(utf8.encode(message), sig);
+    return signer.verifySignature(message, sig);
   }
 
   /// Encrypt a message which can only be decrypted using the associated [RSAPrivateKey]
-  String encrypt(String message) {
-    var cipher = pointy.RSAEngine();
+  String encrypt(String message) =>
+      base64.encode(encryptData(utf8.encode(message)));
+
+  /// Encrypt a message which can only be decrypted using the associated [RSAPrivateKey]
+  Uint8List encryptData(Uint8List message) {
+    var cipher = pointy.PKCS1Encoding(pointy.RSAEngine());
     cipher.init(
         true, pointy.PublicKeyParameter<pointy.RSAPublicKey>(_publicKey));
-    return base64Encode(cipher.process(utf8.encode(message)));
+    return cipher.process(message);
   }
 
   /// Export a [RSAPublicKey] as Pointy Castle RSAPublicKey
@@ -88,6 +107,19 @@ class RSAPublicKey implements PublicKey {
 
   /// Export a [RSAPublicKey] as PEM String which can be reversed using [RSAPublicKey.fromPEM].
   String toPEM() {
-    return '-----BEGIN PUBLIC KEY-----\r\n${toString()}\r\n-----END PUBLIC KEY-----';
+    return '-----BEGIN PUBLIC KEY-----\n${toString()}\n-----END PUBLIC KEY-----';
+  }
+
+  /// Export a [RSAPublicKey] as formatted PEM String which can be reversed using [RSAPublicKey.fromPEM].
+  String toFormattedPEM() {
+    final base = toString();
+    var formatted = '';
+    for (var i = 0; i < base.length; i++) {
+      if (i % 64 == 0 && i != 0) {
+        formatted += '\n';
+      }
+      formatted += base[i];
+    }
+    return '-----BEGIN PUBLIC KEY-----\n${formatted}\n-----END PUBLIC KEY-----';
   }
 }

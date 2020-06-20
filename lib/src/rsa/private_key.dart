@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:crypton/crypton.dart';
 import 'package:asn1lib/asn1lib.dart';
+import 'package:crypton/crypton.dart';
 import 'package:pointycastle/export.dart' as pointy;
 
 /// [PrivateKey] using RSA Algorithm
@@ -47,24 +47,66 @@ class RSAPrivateKey implements PrivateKey {
     return RSAPrivateKey.fromString(privateKeyString);
   }
 
-  /// Sign an message which can be verified using the associated [RSAPublicKey]
+  /// Sign an message with SHA-256 which can be verified using the associated [RSAPublicKey]
   @override
-  String createSignature(String message) {
-    var signer = pointy.Signer('SHA-256/RSA');
+  @Deprecated('Use createSHA256Signature for creating SHA-256 signatures')
+  String createSignature(String message) =>
+      utf8.decode(createSHA256Signature(utf8.encode(message)));
+
+  /// Sign an message with SHA-256 which can be verified using the associated [RSAPublicKey]
+  @override
+  Uint8List createSHA256Signature(Uint8List message) =>
+      _createSignature(message, 'SHA-256/RSA');
+
+  /// Sign an message with SHA-512 which can be verified using the associated [RSAPublicKey]
+  @override
+  Uint8List createSHA512Signature(Uint8List message) =>
+      _createSignature(message, 'SHA-512/RSA');
+
+  Uint8List _createSignature(Uint8List message, String algorithm) {
+    var signer = pointy.Signer(algorithm);
     pointy.AsymmetricKeyParameter<pointy.RSAPrivateKey> privateKeyParams =
         pointy.PrivateKeyParameter(_privateKey);
     signer.init(true, privateKeyParams);
-    pointy.RSASignature sig = signer.generateSignature(utf8.encode(message));
-    return base64Encode(sig.bytes);
+    pointy.RSASignature sig = signer.generateSignature(message);
+    return sig.bytes;
   }
 
   /// Decrypt a message which was encrypted using the associated [RSAPublicKey]
-  String decrypt(String message) {
-    var cipher = pointy.RSAEngine();
+  String decrypt(String message) =>
+      utf8.decode(decryptData(base64.decode(message)));
+
+  /// Decrypt a message which was encrypted using the associated [RSAPublicKey]
+  Uint8List decryptData(Uint8List message) {
+    var cipher = pointy.PKCS1Encoding(pointy.RSAEngine());
     cipher.init(
         false, pointy.PrivateKeyParameter<pointy.RSAPrivateKey>(_privateKey));
-    var text = cipher.process(base64Decode(message));
-    return utf8.decode(text);
+    return _processInBlocks(cipher, message);
+  }
+
+  Uint8List _processInBlocks(
+      pointy.AsymmetricBlockCipher engine, Uint8List input) {
+    final numBlocks = input.length ~/ engine.inputBlockSize +
+        ((input.length % engine.inputBlockSize != 0) ? 1 : 0);
+
+    final output = Uint8List(numBlocks * engine.outputBlockSize);
+
+    var inputOffset = 0;
+    var outputOffset = 0;
+    while (inputOffset < input.length) {
+      final chunkSize = (inputOffset + engine.inputBlockSize <= input.length)
+          ? engine.inputBlockSize
+          : input.length - inputOffset;
+
+      outputOffset += engine.processBlock(
+          input, inputOffset, chunkSize, output, outputOffset);
+
+      inputOffset += chunkSize;
+    }
+
+    return (output.length == outputOffset)
+        ? output
+        : output.sublist(0, outputOffset);
   }
 
   /// Get the [RSAPublicKey] of the [RSAPrivateKey]
@@ -122,6 +164,19 @@ class RSAPrivateKey implements PrivateKey {
 
   /// Export a [RSAPrivateKey] as PEM String which can be reversed using [RSAPrivateKey.fromPEM].
   String toPEM() {
-    return '-----BEGIN PRIVATE KEY-----\r\n${toString()}\r\n-----END PRIVATE KEY-----';
+    return '-----BEGIN RSA PRIVATE KEY-----\n${toString()}\n-----END RSA PRIVATE KEY-----';
+  }
+
+  /// Export a [RSAPrivateKey] as formatted PEM String which can be reversed using [RSAPrivateKey.fromPEM].
+  String toFormattedPEM() {
+    final base = toString();
+    var formatted = '';
+    for (var i = 0; i < base.length; i++) {
+      if (i % 64 == 0 && i != 0) {
+        formatted += '\n';
+      }
+      formatted += base[i];
+    }
+    return '-----BEGIN RSA PRIVATE KEY-----\n${formatted}\n-----END RSA PRIVATE KEY-----';
   }
 }
