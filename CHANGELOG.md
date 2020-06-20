@@ -2,6 +2,8 @@
 - Add RSA key formatting
 - Add SHA-512 signing and verification
 - Fix RSA encryption/decryption
+- Insure backwards compatibility
+Thank you [jld3103](https://github.com/jld3103) for contributing
 
 ## 1.0.9
 - The length of the RSAPrivateKey is now adjustable thanks to [melewetwo](https://github.com/melewetwo)
