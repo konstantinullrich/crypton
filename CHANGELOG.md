@@ -1,3 +1,7 @@
+## 1.1.1
+- Insure backwards compatibility of `RSAPrivateKey.createSignature` and `RSAPublicKey.verifySignature`
+- Update dependencies
+
 ## 1.1.0
 - Add RSA key formatting
 - Add SHA-512 signing and verification
