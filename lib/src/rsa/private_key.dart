@@ -51,7 +51,7 @@ class RSAPrivateKey implements PrivateKey {
   @override
   @Deprecated('Use createSHA256Signature for creating SHA-256 signatures')
   String createSignature(String message) =>
-      utf8.decode(createSHA256Signature(utf8.encode(message)));
+      base64.encode(createSHA256Signature(utf8.encode(message)));
 
   /// Sign an message with SHA-256 which can be verified using the associated [RSAPublicKey]
   @override
