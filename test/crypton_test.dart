@@ -44,6 +44,14 @@ void main() {
       expect(privateKey.toString(), privateKeyString);
     });
 
+    test('Sign and Verify deprecated', () {
+      var signature =
+          rsaKeypair.privateKey.createSignature(utf8.decode(message));
+      var verified =
+          rsaKeypair.publicKey.verifySignature(utf8.decode(message), signature);
+      expect(verified, isTrue);
+    });
+
     test('Sign and Verify SHA-256', () {
       var signature = rsaKeypair.privateKey.createSHA256Signature(message);
       var verified =
@@ -120,6 +128,14 @@ void main() {
     test('Get Public Key from Privat Key', () {
       var publicKeyString = ecKeypair.privateKey.publicKey.toString();
       expect(publicKeyString, ecKeypair.publicKey.toString());
+    });
+
+    test('Sign and Verify deprecated', () {
+      var signature =
+          ecKeypair.privateKey.createSignature(utf8.decode(message));
+      var verified =
+          ecKeypair.publicKey.verifySignature(utf8.decode(message), signature);
+      expect(verified, isTrue);
     });
 
     test('Sign and Verify SHA-256', () {
