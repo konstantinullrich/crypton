@@ -1,3 +1,7 @@
+## 1.1.2
+- Update dependencies
+- Update tests
+
 ## 1.1.1
 - Insure backwards compatibility of `RSAPrivateKey.createSignature` and `RSAPublicKey.verifySignature`
 - Update dependencies

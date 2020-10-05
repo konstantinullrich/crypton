@@ -46,8 +46,10 @@ void main() {
 
     test('Sign and Verify deprecated', () {
       var signature =
+          // ignore: deprecated_member_use_from_same_package
           rsaKeypair.privateKey.createSignature(utf8.decode(message));
       var verified =
+          // ignore: deprecated_member_use_from_same_package
           rsaKeypair.publicKey.verifySignature(utf8.decode(message), signature);
       expect(verified, isTrue);
     });
@@ -132,8 +134,10 @@ void main() {
 
     test('Sign and Verify deprecated', () {
       var signature =
+          // ignore: deprecated_member_use_from_same_package
           ecKeypair.privateKey.createSignature(utf8.decode(message));
       var verified =
+          // ignore: deprecated_member_use_from_same_package
           ecKeypair.publicKey.verifySignature(utf8.decode(message), signature);
       expect(verified, isTrue);
     });
