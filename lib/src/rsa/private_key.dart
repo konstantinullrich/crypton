@@ -133,12 +133,12 @@ class RSAPrivateKey implements PrivateKey {
     var privateKeySeq = ASN1Sequence();
     var modulus = ASN1Integer(_privateKey.n);
     var publicExponent = ASN1Integer(BigInt.parse('65537'));
-    var privateExponent = ASN1Integer(_privateKey.d);
+    var privateExponent = ASN1Integer(_privateKey.privateExponent);
     var p = ASN1Integer(_privateKey.p);
     var q = ASN1Integer(_privateKey.q);
-    var dP = _privateKey.d % (_privateKey.p - BigInt.from(1));
+    var dP = _privateKey.privateExponent % (_privateKey.p - BigInt.from(1));
     var exp1 = ASN1Integer(dP);
-    var dQ = _privateKey.d % (_privateKey.q - BigInt.from(1));
+    var dQ = _privateKey.privateExponent % (_privateKey.q - BigInt.from(1));
     var exp2 = ASN1Integer(dQ);
     var iQ = _privateKey.q.modInverse(_privateKey.p);
     var co = ASN1Integer(iQ);
