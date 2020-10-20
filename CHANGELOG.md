@@ -1,3 +1,6 @@
+## 1.1.3
+- Update deprecated PointyCastle features
+
 ## 1.1.2
 - Update dependencies
 - Update tests
