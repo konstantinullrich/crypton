@@ -7,7 +7,7 @@ import 'package:pointycastle/export.dart' as pointy;
 
 /// [PublicKey] using RSA Algorithm
 class RSAPublicKey implements PublicKey {
-  pointy.RSAPublicKey _publicKey;
+  late pointy.RSAPublicKey _publicKey;
 
   /// Create an [RSAPublicKey] for the given parameters.
   RSAPublicKey(BigInt modulus, BigInt exponent) : _publicKey = pointy.RSAPublicKey(modulus, exponent);
@@ -19,13 +19,13 @@ class RSAPublicKey implements PublicKey {
     final topLevelSeq = asn1Parser.nextObject() as ASN1Sequence;
     final publicKeyBitString = topLevelSeq.elements[1];
 
-    final publicKeyAsn = ASN1Parser(publicKeyBitString.contentBytes());
+    final publicKeyAsn = ASN1Parser(publicKeyBitString.contentBytes()!);
     final publicKeySeq = publicKeyAsn.nextObject() as ASN1Sequence;
     final modulus = publicKeySeq.elements[0] as ASN1Integer;
     final exponent = publicKeySeq.elements[1] as ASN1Integer;
 
     _publicKey = pointy.RSAPublicKey(
-        modulus.valueAsBigInteger, exponent.valueAsBigInteger);
+        modulus.valueAsBigInteger!, exponent.valueAsBigInteger!);
   }
 
   /// Create an [RSAPublicKey] from the given PEM-String.
@@ -58,10 +58,10 @@ class RSAPublicKey implements PublicKey {
 
   bool _verifySignature(
       Uint8List message, Uint8List signature, String algorithm) {
-    var signer = pointy.Signer(algorithm);
+    final signer = pointy.Signer(algorithm);
     pointy.AsymmetricKeyParameter<pointy.RSAPublicKey> publicKeyParams =
         pointy.PublicKeyParameter(_publicKey);
-    var sig = pointy.RSASignature(signature);
+    final sig = pointy.RSASignature(signature);
     signer.init(false, publicKeyParams);
     return signer.verifySignature(message, sig);
   }
@@ -72,7 +72,7 @@ class RSAPublicKey implements PublicKey {
 
   /// Encrypt a message which can only be decrypted using the associated [RSAPrivateKey]
   Uint8List encryptData(Uint8List message) {
-    var cipher = pointy.PKCS1Encoding(pointy.RSAEngine());
+    final cipher = pointy.PKCS1Encoding(pointy.RSAEngine());
     cipher.init(
         true, pointy.PublicKeyParameter<pointy.RSAPublicKey>(_publicKey));
     return cipher.process(message);
@@ -80,25 +80,25 @@ class RSAPublicKey implements PublicKey {
 
   /// Export a [RSAPublicKey] as Pointy Castle RSAPublicKey
   @override
-  pointy.RSAPublicKey/*!*/ get asPointyCastle => _publicKey;
+  pointy.RSAPublicKey get asPointyCastle => _publicKey;
 
   /// Export a [RSAPublic] key as String which can be reversed using [RSAPublicKey.fromString].
   @override
   String toString() {
-    var algorithmSeq = ASN1Sequence();
-    var algorithmAsn1Obj = ASN1Object.fromBytes(Uint8List.fromList(
+    final algorithmSeq = ASN1Sequence();
+    final algorithmAsn1Obj = ASN1Object.fromBytes(Uint8List.fromList(
         [0x6, 0x9, 0x2a, 0x86, 0x48, 0x86, 0xf7, 0xd, 0x1, 0x1, 0x1]));
-    var paramsAsn1Obj = ASN1Object.fromBytes(Uint8List.fromList([0x5, 0x0]));
+    final paramsAsn1Obj = ASN1Object.fromBytes(Uint8List.fromList([0x5, 0x0]));
     algorithmSeq.add(algorithmAsn1Obj);
     algorithmSeq.add(paramsAsn1Obj);
 
-    var publicKeySeq = ASN1Sequence();
-    publicKeySeq.add(ASN1Integer(_publicKey.modulus));
-    publicKeySeq.add(ASN1Integer(_publicKey.exponent));
-    var publicKeySeqBitString =
+    final publicKeySeq = ASN1Sequence();
+    publicKeySeq.add(ASN1Integer(_publicKey.modulus!));
+    publicKeySeq.add(ASN1Integer(_publicKey.exponent!));
+    final publicKeySeqBitString =
         ASN1BitString(Uint8List.fromList(publicKeySeq.encodedBytes));
 
-    var topLevelSeq = ASN1Sequence();
+    final topLevelSeq = ASN1Sequence();
     topLevelSeq.add(algorithmSeq);
     topLevelSeq.add(publicKeySeqBitString);
     return base64.encode(topLevelSeq.encodedBytes);

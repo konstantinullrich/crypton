@@ -10,7 +10,7 @@ class ECPrivateKey implements PrivateKey {
   static final pointy.ECDomainParameters curve = pointy.ECCurve_secp256k1();
 
   /// Create an [ECPrivateKey] for the given d parameter.
-  ECPrivateKey(BigInt/*!*/ d) : _privateKey = pointy.ECPrivateKey(d, curve);
+  ECPrivateKey(BigInt d) : _privateKey = pointy.ECPrivateKey(d, curve);
 
   /// Create an [ECPrivateKey] from the given String.
   ECPrivateKey.fromString(String privateKeyString)
@@ -34,7 +34,7 @@ class ECPrivateKey implements PrivateKey {
       _createSignature(message, 'SHA-512/DET-ECDSA');
 
   Uint8List _createSignature(Uint8List message, String algorithm) {
-    var signer = pointy.Signer(algorithm);
+    final signer = pointy.Signer(algorithm);
     pointy.AsymmetricKeyParameter<pointy.ECPrivateKey> privateKeyParams =
         pointy.PrivateKeyParameter(_privateKey);
     signer.init(true, privateKeyParams);
@@ -46,12 +46,12 @@ class ECPrivateKey implements PrivateKey {
   /// Get the [ECPublicKey] of the [ECPrivateKey]
   @override
   ECPublicKey get publicKey {
-    var Q = curve.G * d;
-    return ECPublicKey(Q.x.toBigInteger(), Q.y.toBigInteger());
+    final Q = (curve.G * d)!;
+    return ECPublicKey(Q.x!.toBigInteger()!, Q.y!.toBigInteger()!);
   }
 
   /// Get the d Parameter as [BigInt]
-  BigInt/*!*/ get d => _privateKey.d;
+  BigInt get d => _privateKey.d!;
 
   /// Export a [ECPrivateKey] as Pointy Castle ECPrivateKey
   @override

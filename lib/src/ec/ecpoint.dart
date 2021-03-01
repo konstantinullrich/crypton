@@ -2,8 +2,8 @@ import 'package:pointycastle/export.dart' as pointy;
 
 /// Point on the elliptic Curve
 class ECPoint {
-  final BigInt/*!*/ x;
-  final BigInt/*!*/ y;
+  final BigInt x;
+  final BigInt y;
   final bool withCompression;
   static final pointy.ECDomainParameters curve = pointy.ECCurve_secp256k1();
 
@@ -15,8 +15,8 @@ class ECPoint {
       curve.curve.createPoint(x, y, withCompression);
 
   ECPoint operator *(BigInt k) {
-    var point = asPointyCastle * k;
+    final point = (asPointyCastle * k)!;
     return ECPoint(
-        point.x.toBigInteger(), point.y.toBigInteger(), point.isCompressed);
+        point.x!.toBigInteger()!, point.y!.toBigInteger()!, point.isCompressed);
   }
 }

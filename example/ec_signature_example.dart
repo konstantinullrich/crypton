@@ -4,15 +4,15 @@ import 'dart:typed_data';
 import 'package:crypton/crypton.dart';
 
 void main() {
-  var ecKeypair = ECKeypair.fromRandom();
-  var message =
+  final ecKeypair = ECKeypair.fromRandom();
+  final message =
       utf8.encode(DateTime.now().millisecondsSinceEpoch.toRadixString(16));
 
-  var privateKeyString = ecKeypair.privateKey.toString();
-  var publicKeyString = ecKeypair.publicKey.toString();
-  var signature =
+  final privateKeyString = ecKeypair.privateKey.toString();
+  final publicKeyString = ecKeypair.publicKey.toString();
+  final signature =
       ecKeypair.privateKey.createSHA256Signature(message as Uint8List);
-  var verified =
+  final verified =
       ecKeypair.privateKey.publicKey.verifySHA256Signature(message, signature);
 
   print('Your Private Key\n $privateKeyString\n---');

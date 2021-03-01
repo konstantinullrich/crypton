@@ -5,8 +5,8 @@ import 'helper.dart';
 
 /// [Keypair] using EC Algorithm
 class ECKeypair implements Keypair {
-  ECPrivateKey /*!*/ _privateKey;
-  ECPublicKey /*!*/ _publicKey;
+  late ECPrivateKey _privateKey;
+  late ECPublicKey _publicKey;
 
   /// Create a [ECKeypair] using an [ECPrivateKey]
   ECKeypair(this._privateKey) : _publicKey = _privateKey.publicKey;
@@ -23,9 +23,9 @@ class ECKeypair implements Keypair {
     final publicKey = pair.publicKey as pointy.ECPublicKey;
     final privateKey = pair.privateKey as pointy.ECPrivateKey;
 
-    var Q = publicKey.Q;
-    _publicKey = ECPublicKey(Q.x.toBigInteger(), Q.y.toBigInteger());
-    _privateKey = ECPrivateKey(privateKey.d);
+    final Q = publicKey.Q!;
+    _publicKey = ECPublicKey(Q.x!.toBigInteger()!, Q.y!.toBigInteger()!);
+    _privateKey = ECPrivateKey(privateKey.d!);
   }
 
   /// Get the [ECPublicKey] associated [ECPrivateKey]

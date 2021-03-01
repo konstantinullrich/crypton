@@ -6,7 +6,7 @@ import 'package:pointycastle/export.dart' as pointy;
 
 /// [PublicKey] using EC Algorithm
 class ECPublicKey implements PublicKey {
-  pointy.ECPublicKey _publicKey;
+  final pointy.ECPublicKey _publicKey;
   static final pointy.ECDomainParameters curve = pointy.ECCurve_secp256k1();
 
   /// Create an [ECPublicKey] for the given coordinates.
@@ -38,24 +38,24 @@ class ECPublicKey implements PublicKey {
 
   bool _verifySignature(
       Uint8List message, Uint8List signatureString, String algorithm) {
-    var sigLength = (signatureString.length / 2).round();
-    var r = BigInt.parse(
+    final sigLength = (signatureString.length / 2).round();
+    final r = BigInt.parse(
       utf8.decode(signatureString.sublist(0, sigLength)),
       radix: 16,
     );
-    var s = BigInt.parse(
+    final s = BigInt.parse(
       utf8.decode(signatureString.sublist(sigLength)),
       radix: 16,
     );
-    var signature = pointy.ECSignature(r, s);
-    var signer = pointy.Signer(algorithm);
+    final signature = pointy.ECSignature(r, s);
+    final signer = pointy.Signer(algorithm);
     signer.init(false, pointy.PublicKeyParameter(_publicKey));
     return signer.verifySignature(message, signature);
   }
 
   /// Get [ECPoint] Q, which is the Public Point
-  ECPoint get Q => ECPoint(_publicKey.Q.x.toBigInteger(),
-      _publicKey.Q.y.toBigInteger(), _publicKey.Q.isCompressed);
+  ECPoint get Q => ECPoint(_publicKey.Q!.x!.toBigInteger()!,
+      _publicKey.Q!.y!.toBigInteger()!, _publicKey.Q!.isCompressed);
 
   /// Export a [ECPublicKey] as Pointy Castle ECPublicKey
   @override
@@ -63,5 +63,5 @@ class ECPublicKey implements PublicKey {
 
   /// Export a [ECPublicKey] as String which can be reversed using [ECPublicKey.fromString].
   @override
-  String toString() => base64Encode(_publicKey.Q.getEncoded());
+  String toString() => base64Encode(_publicKey.Q!.getEncoded());
 }

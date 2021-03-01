@@ -1,13 +1,13 @@
 import 'package:crypton/crypton.dart';
 
 void main() {
-  var rsaKeypair = RSAKeypair.fromRandom();
-  var message = DateTime.now().millisecondsSinceEpoch.toRadixString(16);
+  final rsaKeypair = RSAKeypair.fromRandom();
+  final message = DateTime.now().millisecondsSinceEpoch.toRadixString(16);
 
-  var privateKeyString = rsaKeypair.privateKey.toString();
-  var publicKeyString = rsaKeypair.publicKey.toString();
-  var encrypted = rsaKeypair.publicKey.encrypt(message);
-  var decrypted = rsaKeypair.privateKey.decrypt(encrypted);
+  final privateKeyString = rsaKeypair.privateKey.toString();
+  final publicKeyString = rsaKeypair.publicKey.toString();
+  final encrypted = rsaKeypair.publicKey.encrypt(message);
+  final decrypted = rsaKeypair.privateKey.decrypt(encrypted);
 
   print('Your Private Key\n $privateKeyString\n---');
   print('Your Public Key\n $publicKeyString\n---');
