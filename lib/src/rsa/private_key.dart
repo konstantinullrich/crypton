@@ -10,24 +10,23 @@ class RSAPrivateKey implements PrivateKey {
   pointy.RSAPrivateKey _privateKey;
 
   /// Create an [RSAPrivateKey] for the given parameters.
-  RSAPrivateKey(BigInt modulus, BigInt exponent, BigInt p, BigInt q) {
-    _privateKey = pointy.RSAPrivateKey(modulus, exponent, p, q);
-  }
+  RSAPrivateKey(BigInt modulus, BigInt exponent, BigInt /*!*/ p, BigInt /*!*/ q)
+      : _privateKey = pointy.RSAPrivateKey(modulus, exponent, p, q);
 
   /// Create an [RSAPrivateKey] from the given String.
   RSAPrivateKey.fromString(String privateKeyString) {
     List<int> privateKeyDER = base64Decode(privateKeyString);
-    var asn1Parser = ASN1Parser(privateKeyDER);
-    var topLevelSeq = asn1Parser.nextObject() as ASN1Sequence;
-    var privateKey = topLevelSeq.elements[2];
+    var asn1Parser = ASN1Parser(privateKeyDER as Uint8List);
+    final topLevelSeq = asn1Parser.nextObject() as ASN1Sequence;
+    final privateKey = topLevelSeq.elements[2];
 
     asn1Parser = ASN1Parser(privateKey.contentBytes());
-    var pkSeq = asn1Parser.nextObject() as ASN1Sequence;
+    final pkSeq = asn1Parser.nextObject() as ASN1Sequence;
 
-    var modulus = pkSeq.elements[1] as ASN1Integer;
-    var privateExponent = pkSeq.elements[3] as ASN1Integer;
-    var p = pkSeq.elements[4] as ASN1Integer;
-    var q = pkSeq.elements[5] as ASN1Integer;
+    final modulus = pkSeq.elements[1] as ASN1Integer;
+    final privateExponent = pkSeq.elements[3] as ASN1Integer;
+    final p = pkSeq.elements[4] as ASN1Integer;
+    final q = pkSeq.elements[5] as ASN1Integer;
 
     _privateKey = pointy.RSAPrivateKey(
         modulus.valueAsBigInteger,
@@ -51,7 +50,7 @@ class RSAPrivateKey implements PrivateKey {
   @override
   @Deprecated('Use createSHA256Signature for creating SHA-256 signatures')
   String createSignature(String message) =>
-      base64.encode(createSHA256Signature(utf8.encode(message)));
+      base64.encode(createSHA256Signature(utf8.encode(message) as Uint8List));
 
   /// Sign an message with SHA-256 which can be verified using the associated [RSAPublicKey]
   @override
@@ -64,11 +63,11 @@ class RSAPrivateKey implements PrivateKey {
       _createSignature(message, 'SHA-512/RSA');
 
   Uint8List _createSignature(Uint8List message, String algorithm) {
-    var signer = pointy.Signer(algorithm);
+    final signer = pointy.Signer(algorithm);
     pointy.AsymmetricKeyParameter<pointy.RSAPrivateKey> privateKeyParams =
         pointy.PrivateKeyParameter(_privateKey);
     signer.init(true, privateKeyParams);
-    pointy.RSASignature sig = signer.generateSignature(message);
+    final sig = signer.generateSignature(message) as pointy.RSASignature;
     return sig.bytes;
   }
 
@@ -116,7 +115,7 @@ class RSAPrivateKey implements PrivateKey {
 
   /// Export a [RSAPrivateKey] as Pointy Castle RSAPrivateKey
   @override
-  pointy.RSAPrivateKey get asPointyCastle => _privateKey;
+  pointy.RSAPrivateKey /*!*/ get asPointyCastle => _privateKey;
 
   /// Export a [RSAPrivateKey] as String which can be reversed using [RSAPrivateKey.fromString].
   @override

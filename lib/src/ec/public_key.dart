@@ -10,22 +10,21 @@ class ECPublicKey implements PublicKey {
   static final pointy.ECDomainParameters curve = pointy.ECCurve_secp256k1();
 
   /// Create an [ECPublicKey] for the given coordinates.
-  ECPublicKey(BigInt x, BigInt y) {
-    var Q = ECPoint(x, y, true);
-    _publicKey = pointy.ECPublicKey(Q.asPointyCastle, curve);
-  }
+  ECPublicKey(BigInt x, BigInt y)
+      : _publicKey =
+            pointy.ECPublicKey(ECPoint(x, y, true).asPointyCastle, curve);
 
   /// Create an [ECPublicKey] from the given String.
-  ECPublicKey.fromString(String publicKeyString) {
-    var Q = curve.curve.decodePoint(base64Decode(publicKeyString));
-    _publicKey = pointy.ECPublicKey(Q, curve);
-  }
+  ECPublicKey.fromString(String publicKeyString)
+      : _publicKey = pointy.ECPublicKey(
+            curve.curve.decodePoint(base64Decode(publicKeyString)), curve);
 
   /// Verify the signature of a SHA256-hashed message signed with the associated [ECPrivateKey]
   @Deprecated('For SHA256 signature verification use verifySHA256Signature')
   @override
   bool verifySignature(String message, String signature) =>
-      verifySHA256Signature(utf8.encode(message), utf8.encode(signature));
+      verifySHA256Signature(utf8.encode(message) as Uint8List,
+          utf8.encode(signature) as Uint8List);
 
   /// Verify the signature of a SHA256-hashed message signed with the associated [ECPrivateKey]
   @override

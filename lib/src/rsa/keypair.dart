@@ -6,8 +6,8 @@ import 'package:crypton/crypton.dart';
 
 /// [Keypair] using RSA Algorithm
 class RSAKeypair implements Keypair {
-  RSAPrivateKey _privateKey;
-  RSAPublicKey _publicKey;
+  RSAPrivateKey/*!*/ _privateKey;
+  RSAPublicKey/*!*/ _publicKey;
 
   /// Create a [RSAKeypair] using an [RSAPrivateKey]
   RSAKeypair(this._privateKey) : _publicKey = _privateKey.publicKey;
@@ -32,8 +32,8 @@ class RSAKeypair implements Keypair {
     generator.init(randomParams);
 
     var pair = generator.generateKeyPair();
-    pointy.RSAPublicKey publicKey = pair.publicKey;
-    pointy.RSAPrivateKey privateKey = pair.privateKey;
+    pointy.RSAPublicKey publicKey = pair.publicKey as pointy.RSAPublicKey;
+    pointy.RSAPrivateKey privateKey = pair.privateKey as pointy.RSAPrivateKey;
 
     _publicKey = RSAPublicKey(publicKey.modulus, publicKey.exponent);
     _privateKey = RSAPrivateKey(

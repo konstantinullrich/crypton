@@ -10,21 +10,19 @@ class RSAPublicKey implements PublicKey {
   pointy.RSAPublicKey _publicKey;
 
   /// Create an [RSAPublicKey] for the given parameters.
-  RSAPublicKey(BigInt modulus, BigInt exponent) {
-    _publicKey = pointy.RSAPublicKey(modulus, exponent);
-  }
+  RSAPublicKey(BigInt modulus, BigInt exponent) : _publicKey = pointy.RSAPublicKey(modulus, exponent);
 
   /// Create an [RSAPublicKey] from the given String.
   RSAPublicKey.fromString(String publicKeyString) {
     List<int> publicKeyDER = base64Decode(publicKeyString);
-    var asn1Parser = ASN1Parser(publicKeyDER);
-    var topLevelSeq = asn1Parser.nextObject() as ASN1Sequence;
-    var publicKeyBitString = topLevelSeq.elements[1];
+    final asn1Parser = ASN1Parser(publicKeyDER as Uint8List);
+    final topLevelSeq = asn1Parser.nextObject() as ASN1Sequence;
+    final publicKeyBitString = topLevelSeq.elements[1];
 
-    var publicKeyAsn = ASN1Parser(publicKeyBitString.contentBytes());
-    ASN1Sequence publicKeySeq = publicKeyAsn.nextObject();
-    var modulus = publicKeySeq.elements[0] as ASN1Integer;
-    var exponent = publicKeySeq.elements[1] as ASN1Integer;
+    final publicKeyAsn = ASN1Parser(publicKeyBitString.contentBytes());
+    final publicKeySeq = publicKeyAsn.nextObject() as ASN1Sequence;
+    final modulus = publicKeySeq.elements[0] as ASN1Integer;
+    final exponent = publicKeySeq.elements[1] as ASN1Integer;
 
     _publicKey = pointy.RSAPublicKey(
         modulus.valueAsBigInteger, exponent.valueAsBigInteger);
@@ -45,7 +43,8 @@ class RSAPublicKey implements PublicKey {
   @Deprecated('For SHA256 signature verification use verifySHA256Signature')
   @override
   bool verifySignature(String message, String signature) =>
-      verifySHA256Signature(utf8.encode(message), base64.decode(signature));
+      verifySHA256Signature(
+          utf8.encode(message) as Uint8List, base64.decode(signature));
 
   /// Verify the signature of a SHA256-hashed message signed with the associated [RSAPrivateKey]
   @override
@@ -69,7 +68,7 @@ class RSAPublicKey implements PublicKey {
 
   /// Encrypt a message which can only be decrypted using the associated [RSAPrivateKey]
   String encrypt(String message) =>
-      base64.encode(encryptData(utf8.encode(message)));
+      base64.encode(encryptData(utf8.encode(message) as Uint8List));
 
   /// Encrypt a message which can only be decrypted using the associated [RSAPrivateKey]
   Uint8List encryptData(Uint8List message) {
@@ -81,7 +80,7 @@ class RSAPublicKey implements PublicKey {
 
   /// Export a [RSAPublicKey] as Pointy Castle RSAPublicKey
   @override
-  pointy.RSAPublicKey get asPointyCastle => _publicKey;
+  pointy.RSAPublicKey/*!*/ get asPointyCastle => _publicKey;
 
   /// Export a [RSAPublic] key as String which can be reversed using [RSAPublicKey.fromString].
   @override

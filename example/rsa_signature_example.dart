@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:crypton/crypton.dart';
 
@@ -9,7 +10,8 @@ void main() {
 
   var privateKeyString = rsaKeypair.privateKey.toString();
   var publicKeyString = rsaKeypair.publicKey.toString();
-  var signature = rsaKeypair.privateKey.createSHA256Signature(message);
+  var signature =
+      rsaKeypair.privateKey.createSHA256Signature(message as Uint8List);
   var verified = rsaKeypair.publicKey.verifySHA256Signature(message, signature);
 
   print('Your Private Key\n $privateKeyString\n---');

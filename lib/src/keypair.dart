@@ -8,8 +8,10 @@ abstract class Keypair {
   Keypair.fromRandom();
 
   /// Get the [PublicKey] associated [PrivateKey]
-  PublicKey get publicKey => null;
+  PublicKey get publicKey =>
+      throw UnimplementedError('publicKey is not implemented yet!');
 
   /// Get the [PrivateKey] associated [PublicKey]
-  PrivateKey get privateKey => null;
+  PrivateKey get privateKey =>
+      throw UnimplementedError('privateKey is not implemented yet!');
 }
