@@ -1,4 +1,4 @@
-## 2.0.0-nullsafety
+## 2.0.0
 - Migrate to support null safety
 
 ## 1.1.3
