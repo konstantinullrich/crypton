@@ -120,6 +120,6 @@ class RSAPublicKey implements PublicKey {
       }
       formatted += base[i];
     }
-    return '-----BEGIN PUBLIC KEY-----\n${formatted}\n-----END PUBLIC KEY-----';
+    return '-----BEGIN PUBLIC KEY-----\n$formatted\n-----END PUBLIC KEY-----';
   }
 }

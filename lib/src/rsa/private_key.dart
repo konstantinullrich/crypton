@@ -176,6 +176,6 @@ class RSAPrivateKey implements PrivateKey {
       }
       formatted += base[i];
     }
-    return '-----BEGIN RSA PRIVATE KEY-----\n${formatted}\n-----END RSA PRIVATE KEY-----';
+    return '-----BEGIN RSA PRIVATE KEY-----\n$formatted\n-----END RSA PRIVATE KEY-----';
   }
 }
