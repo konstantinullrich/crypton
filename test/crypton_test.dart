@@ -11,9 +11,7 @@ void main() {
 
     setUp(() {
       rsaKeypair = RSAKeypair.fromRandom(keySize: 2048);
-      message =
-          utf8.encode(DateTime.now().millisecondsSinceEpoch.toRadixString(16))
-              as Uint8List;
+      message = utf8.encode('Crypton Test Message') as Uint8List;
     });
 
     test('Private Key to String and back', () {
