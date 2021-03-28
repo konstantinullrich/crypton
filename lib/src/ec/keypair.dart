@@ -1,30 +1,31 @@
-import 'package:pointycastle/export.dart' as pointy;
 import 'package:crypton/crypton.dart';
+import 'package:pointycastle/export.dart' as pointy;
 
 import 'helper.dart';
 
 /// [Keypair] using EC Algorithm
 class ECKeypair implements Keypair {
-  ECPrivateKey _privateKey;
-  ECPublicKey _publicKey;
+  late ECPrivateKey _privateKey;
+  late ECPublicKey _publicKey;
 
   /// Create a [ECKeypair] using an [ECPrivateKey]
   ECKeypair(this._privateKey) : _publicKey = _privateKey.publicKey;
 
   /// Generate a random [ECKeypair] on the secp256k1-Curve
   ECKeypair.fromRandom() {
-    var keyParams = pointy.ECKeyGeneratorParameters(pointy.ECCurve_secp256k1());
+    final keyParams =
+        pointy.ECKeyGeneratorParameters(pointy.ECCurve_secp256k1());
 
-    var generator = pointy.ECKeyGenerator();
+    final generator = pointy.ECKeyGenerator();
     generator.init(withRandom(keyParams));
 
-    var pair = generator.generateKeyPair();
-    pointy.ECPublicKey publicKey = pair.publicKey;
-    pointy.ECPrivateKey privateKey = pair.privateKey;
+    final pair = generator.generateKeyPair();
+    final publicKey = pair.publicKey as pointy.ECPublicKey;
+    final privateKey = pair.privateKey as pointy.ECPrivateKey;
 
-    var Q = publicKey.Q;
-    _publicKey = ECPublicKey(Q.x.toBigInteger(), Q.y.toBigInteger());
-    _privateKey = ECPrivateKey(privateKey.d);
+    final Q = publicKey.Q!;
+    _publicKey = ECPublicKey(Q.x!.toBigInteger()!, Q.y!.toBigInteger()!);
+    _privateKey = ECPrivateKey(privateKey.d!);
   }
 
   /// Get the [ECPublicKey] associated [ECPrivateKey]

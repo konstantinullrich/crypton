@@ -7,31 +7,30 @@ import 'package:pointycastle/export.dart' as pointy;
 
 /// [PrivateKey] using RSA Algorithm
 class RSAPrivateKey implements PrivateKey {
-  pointy.RSAPrivateKey _privateKey;
+  late pointy.RSAPrivateKey _privateKey;
 
   /// Create an [RSAPrivateKey] for the given parameters.
-  RSAPrivateKey(BigInt modulus, BigInt exponent, BigInt p, BigInt q) {
-    _privateKey = pointy.RSAPrivateKey(modulus, exponent, p, q);
-  }
+  RSAPrivateKey(BigInt modulus, BigInt exponent, BigInt p, BigInt q)
+      : _privateKey = pointy.RSAPrivateKey(modulus, exponent, p, q);
 
   /// Create an [RSAPrivateKey] from the given String.
   RSAPrivateKey.fromString(String privateKeyString) {
     List<int> privateKeyDER = base64Decode(privateKeyString);
-    var asn1Parser = ASN1Parser(privateKeyDER);
-    var topLevelSeq = asn1Parser.nextObject() as ASN1Sequence;
-    var privateKey = topLevelSeq.elements[2];
+    var asn1Parser = ASN1Parser(privateKeyDER as Uint8List);
+    final topLevelSeq = asn1Parser.nextObject() as ASN1Sequence;
+    final privateKey = topLevelSeq.elements[2];
 
-    asn1Parser = ASN1Parser(privateKey.contentBytes());
-    var pkSeq = asn1Parser.nextObject() as ASN1Sequence;
+    asn1Parser = ASN1Parser(privateKey.contentBytes()!);
+    final pkSeq = asn1Parser.nextObject() as ASN1Sequence;
 
-    var modulus = pkSeq.elements[1] as ASN1Integer;
-    var privateExponent = pkSeq.elements[3] as ASN1Integer;
-    var p = pkSeq.elements[4] as ASN1Integer;
-    var q = pkSeq.elements[5] as ASN1Integer;
+    final modulus = pkSeq.elements[1] as ASN1Integer;
+    final privateExponent = pkSeq.elements[3] as ASN1Integer;
+    final p = pkSeq.elements[4] as ASN1Integer;
+    final q = pkSeq.elements[5] as ASN1Integer;
 
     _privateKey = pointy.RSAPrivateKey(
-        modulus.valueAsBigInteger,
-        privateExponent.valueAsBigInteger,
+        modulus.valueAsBigInteger!,
+        privateExponent.valueAsBigInteger!,
         p.valueAsBigInteger,
         q.valueAsBigInteger);
   }
@@ -51,7 +50,7 @@ class RSAPrivateKey implements PrivateKey {
   @override
   @Deprecated('Use createSHA256Signature for creating SHA-256 signatures')
   String createSignature(String message) =>
-      base64.encode(createSHA256Signature(utf8.encode(message)));
+      base64.encode(createSHA256Signature(utf8.encode(message) as Uint8List));
 
   /// Sign an message with SHA-256 which can be verified using the associated [RSAPublicKey]
   @override
@@ -64,11 +63,11 @@ class RSAPrivateKey implements PrivateKey {
       _createSignature(message, 'SHA-512/RSA');
 
   Uint8List _createSignature(Uint8List message, String algorithm) {
-    var signer = pointy.Signer(algorithm);
+    final signer = pointy.Signer(algorithm);
     pointy.AsymmetricKeyParameter<pointy.RSAPrivateKey> privateKeyParams =
         pointy.PrivateKeyParameter(_privateKey);
     signer.init(true, privateKeyParams);
-    pointy.RSASignature sig = signer.generateSignature(message);
+    final sig = signer.generateSignature(message) as pointy.RSASignature;
     return sig.bytes;
   }
 
@@ -78,7 +77,7 @@ class RSAPrivateKey implements PrivateKey {
 
   /// Decrypt a message which was encrypted using the associated [RSAPublicKey]
   Uint8List decryptData(Uint8List message) {
-    var cipher = pointy.PKCS1Encoding(pointy.RSAEngine());
+    final cipher = pointy.PKCS1Encoding(pointy.RSAEngine());
     cipher.init(
         false, pointy.PrivateKeyParameter<pointy.RSAPrivateKey>(_privateKey));
     return _processInBlocks(cipher, message);
@@ -112,7 +111,7 @@ class RSAPrivateKey implements PrivateKey {
   /// Get the [RSAPublicKey] of the [RSAPrivateKey]
   @override
   RSAPublicKey get publicKey =>
-      RSAPublicKey(_privateKey.modulus, BigInt.parse('65537'));
+      RSAPublicKey(_privateKey.modulus!, BigInt.parse('65537'));
 
   /// Export a [RSAPrivateKey] as Pointy Castle RSAPrivateKey
   @override
@@ -121,27 +120,27 @@ class RSAPrivateKey implements PrivateKey {
   /// Export a [RSAPrivateKey] as String which can be reversed using [RSAPrivateKey.fromString].
   @override
   String toString() {
-    var version = ASN1Integer(BigInt.from(0));
+    final version = ASN1Integer(BigInt.from(0));
 
-    var algorithmSeq = ASN1Sequence();
-    var algorithmAsn1Obj = ASN1Object.fromBytes(Uint8List.fromList(
+    final algorithmSeq = ASN1Sequence();
+    final algorithmAsn1Obj = ASN1Object.fromBytes(Uint8List.fromList(
         [0x6, 0x9, 0x2a, 0x86, 0x48, 0x86, 0xf7, 0xd, 0x1, 0x1, 0x1]));
-    var paramsAsn1Obj = ASN1Object.fromBytes(Uint8List.fromList([0x5, 0x0]));
+    final paramsAsn1Obj = ASN1Object.fromBytes(Uint8List.fromList([0x5, 0x0]));
     algorithmSeq.add(algorithmAsn1Obj);
     algorithmSeq.add(paramsAsn1Obj);
 
-    var privateKeySeq = ASN1Sequence();
-    var modulus = ASN1Integer(_privateKey.n);
-    var publicExponent = ASN1Integer(BigInt.parse('65537'));
-    var privateExponent = ASN1Integer(_privateKey.privateExponent);
-    var p = ASN1Integer(_privateKey.p);
-    var q = ASN1Integer(_privateKey.q);
-    var dP = _privateKey.privateExponent % (_privateKey.p - BigInt.from(1));
-    var exp1 = ASN1Integer(dP);
-    var dQ = _privateKey.privateExponent % (_privateKey.q - BigInt.from(1));
-    var exp2 = ASN1Integer(dQ);
-    var iQ = _privateKey.q.modInverse(_privateKey.p);
-    var co = ASN1Integer(iQ);
+    final privateKeySeq = ASN1Sequence();
+    final modulus = ASN1Integer(_privateKey.n!);
+    final publicExponent = ASN1Integer(BigInt.parse('65537'));
+    final privateExponent = ASN1Integer(_privateKey.privateExponent!);
+    final p = ASN1Integer(_privateKey.p!);
+    final q = ASN1Integer(_privateKey.q!);
+    final dP = _privateKey.privateExponent! % (_privateKey.p! - BigInt.from(1));
+    final exp1 = ASN1Integer(dP);
+    final dQ = _privateKey.privateExponent! % (_privateKey.q! - BigInt.from(1));
+    final exp2 = ASN1Integer(dQ);
+    final iQ = _privateKey.q!.modInverse(_privateKey.p!);
+    final co = ASN1Integer(iQ);
 
     privateKeySeq.add(version);
     privateKeySeq.add(modulus);
@@ -152,10 +151,10 @@ class RSAPrivateKey implements PrivateKey {
     privateKeySeq.add(exp1);
     privateKeySeq.add(exp2);
     privateKeySeq.add(co);
-    var publicKeySeqOctetString =
+    final publicKeySeqOctetString =
         ASN1OctetString(Uint8List.fromList(privateKeySeq.encodedBytes));
 
-    var topLevelSeq = ASN1Sequence();
+    final topLevelSeq = ASN1Sequence();
     topLevelSeq.add(version);
     topLevelSeq.add(algorithmSeq);
     topLevelSeq.add(publicKeySeqOctetString);

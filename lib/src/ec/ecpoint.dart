@@ -15,8 +15,8 @@ class ECPoint {
       curve.curve.createPoint(x, y, withCompression);
 
   ECPoint operator *(BigInt k) {
-    var point = asPointyCastle * k;
+    final point = (asPointyCastle * k)!;
     return ECPoint(
-        point.x.toBigInteger(), point.y.toBigInteger(), point.isCompressed);
+        point.x!.toBigInteger()!, point.y!.toBigInteger()!, point.isCompressed);
   }
 }

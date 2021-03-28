@@ -1,16 +1,18 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:crypton/crypton.dart';
 
 void main() {
-  var rsaKeypair = RSAKeypair.fromRandom();
-  var message =
+  final rsaKeypair = RSAKeypair.fromRandom();
+  final message =
       utf8.encode(DateTime.now().millisecondsSinceEpoch.toRadixString(16));
 
-  var privateKeyString = rsaKeypair.privateKey.toString();
-  var publicKeyString = rsaKeypair.publicKey.toString();
-  var signature = rsaKeypair.privateKey.createSHA256Signature(message);
-  var verified = rsaKeypair.publicKey.verifySHA256Signature(message, signature);
+  final privateKeyString = rsaKeypair.privateKey.toString();
+  final publicKeyString = rsaKeypair.publicKey.toString();
+  final signature =
+      rsaKeypair.privateKey.createSHA256Signature(message as Uint8List);
+  final verified = rsaKeypair.publicKey.verifySHA256Signature(message, signature);
 
   print('Your Private Key\n $privateKeyString\n---');
   print('Your Public Key\n $publicKeyString\n---');

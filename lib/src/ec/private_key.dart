@@ -6,25 +6,22 @@ import 'package:pointycastle/export.dart' as pointy;
 
 /// [PrivateKey] using EC Algorithm
 class ECPrivateKey implements PrivateKey {
-  pointy.ECPrivateKey _privateKey;
+  final pointy.ECPrivateKey _privateKey;
   static final pointy.ECDomainParameters curve = pointy.ECCurve_secp256k1();
 
   /// Create an [ECPrivateKey] for the given d parameter.
-  ECPrivateKey(BigInt d) {
-    _privateKey = pointy.ECPrivateKey(d, curve);
-  }
+  ECPrivateKey(BigInt d) : _privateKey = pointy.ECPrivateKey(d, curve);
 
   /// Create an [ECPrivateKey] from the given String.
-  ECPrivateKey.fromString(String privateKeyString) {
-    _privateKey =
-        pointy.ECPrivateKey(BigInt.parse(privateKeyString, radix: 16), curve);
-  }
+  ECPrivateKey.fromString(String privateKeyString)
+      : _privateKey = pointy.ECPrivateKey(
+            BigInt.parse(privateKeyString, radix: 16), curve);
 
   /// Sign an message with SHA-256 which can be verified using the associated [ECPublicKey]
   @override
   @Deprecated('Use createSHA256Signature for creating SHA-256 signatures')
   String createSignature(String message) =>
-      utf8.decode(createSHA256Signature(utf8.encode(message)));
+      utf8.decode(createSHA256Signature(utf8.encode(message) as Uint8List));
 
   /// Sign an message with SHA-256 which can be verified using the associated [ECPublicKey]
   @override
@@ -37,23 +34,24 @@ class ECPrivateKey implements PrivateKey {
       _createSignature(message, 'SHA-512/DET-ECDSA');
 
   Uint8List _createSignature(Uint8List message, String algorithm) {
-    var signer = pointy.Signer(algorithm);
+    final signer = pointy.Signer(algorithm);
     pointy.AsymmetricKeyParameter<pointy.ECPrivateKey> privateKeyParams =
         pointy.PrivateKeyParameter(_privateKey);
     signer.init(true, privateKeyParams);
-    pointy.ECSignature sig = signer.generateSignature(message);
-    return utf8.encode(sig.r.toRadixString(16) + sig.s.toRadixString(16));
+    final sig = signer.generateSignature(message) as pointy.ECSignature;
+    return utf8.encode(sig.r.toRadixString(16) + sig.s.toRadixString(16))
+        as Uint8List;
   }
 
   /// Get the [ECPublicKey] of the [ECPrivateKey]
   @override
   ECPublicKey get publicKey {
-    var Q = curve.G * _privateKey.d;
-    return ECPublicKey(Q.x.toBigInteger(), Q.y.toBigInteger());
+    final Q = (curve.G * d)!;
+    return ECPublicKey(Q.x!.toBigInteger()!, Q.y!.toBigInteger()!);
   }
 
   /// Get the d Parameter as [BigInt]
-  BigInt get d => _privateKey.d;
+  BigInt get d => _privateKey.d!;
 
   /// Export a [ECPrivateKey] as Pointy Castle ECPrivateKey
   @override
@@ -61,5 +59,5 @@ class ECPrivateKey implements PrivateKey {
 
   /// Export a [ECPrivateKey] as String which can be reversed using [ECPrivateKey.fromString].
   @override
-  String toString() => _privateKey.d.toRadixString(16);
+  String toString() => d.toRadixString(16);
 }

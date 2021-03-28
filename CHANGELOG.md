@@ -1,3 +1,6 @@
+## 2.0.0
+- Migrate to support null safety
+
 ## 1.1.3
 - Update deprecated PointyCastle features
 
