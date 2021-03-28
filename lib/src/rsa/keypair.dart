@@ -36,8 +36,8 @@ class RSAKeypair implements Keypair {
     final privateKey = pair.privateKey as pointy.RSAPrivateKey;
 
     _publicKey = RSAPublicKey(publicKey.modulus!, publicKey.exponent!);
-    _privateKey = RSAPrivateKey(
-        privateKey.modulus!, privateKey.exponent!, privateKey.p!, privateKey.q!);
+    _privateKey = RSAPrivateKey(privateKey.modulus!, privateKey.exponent!,
+        privateKey.p!, privateKey.q!);
   }
 
   /// Get the [RSAPublicKey] associated [RSAPrivateKey]

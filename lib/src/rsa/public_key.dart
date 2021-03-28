@@ -10,7 +10,8 @@ class RSAPublicKey implements PublicKey {
   late pointy.RSAPublicKey _publicKey;
 
   /// Create an [RSAPublicKey] for the given parameters.
-  RSAPublicKey(BigInt modulus, BigInt exponent) : _publicKey = pointy.RSAPublicKey(modulus, exponent);
+  RSAPublicKey(BigInt modulus, BigInt exponent)
+      : _publicKey = pointy.RSAPublicKey(modulus, exponent);
 
   /// Create an [RSAPublicKey] from the given String.
   RSAPublicKey.fromString(String publicKeyString) {

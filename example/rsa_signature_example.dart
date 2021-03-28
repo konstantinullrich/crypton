@@ -12,7 +12,8 @@ void main() {
   final publicKeyString = rsaKeypair.publicKey.toString();
   final signature =
       rsaKeypair.privateKey.createSHA256Signature(message as Uint8List);
-  final verified = rsaKeypair.publicKey.verifySHA256Signature(message, signature);
+  final verified =
+      rsaKeypair.publicKey.verifySHA256Signature(message, signature);
 
   print('Your Private Key\n $privateKeyString\n---');
   print('Your Public Key\n $publicKeyString\n---');

@@ -12,7 +12,8 @@ void main() {
     setUp(() {
       rsaKeypair = RSAKeypair.fromRandom(keySize: 2048);
       message =
-          utf8.encode(DateTime.now().millisecondsSinceEpoch.toRadixString(16)) as Uint8List;
+          utf8.encode(DateTime.now().millisecondsSinceEpoch.toRadixString(16))
+              as Uint8List;
     });
 
     test('Private Key to String and back', () {
@@ -112,7 +113,8 @@ void main() {
     setUp(() {
       ecKeypair = ECKeypair.fromRandom();
       message =
-          utf8.encode(DateTime.now().millisecondsSinceEpoch.toRadixString(16)) as Uint8List;
+          utf8.encode(DateTime.now().millisecondsSinceEpoch.toRadixString(16))
+              as Uint8List;
     });
 
     test('Private Key to String and back', () {
