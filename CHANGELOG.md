@@ -1,3 +1,7 @@
+## 2.0.1
+- Update Code Format
+- Update Tests
+
 ## 2.0.0
 - Migrate to support null safety
 
