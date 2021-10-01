@@ -85,7 +85,7 @@ void main() {
                   .split('\n')
                   .map((l) => l.length)
                   .toList()
-                    ..sort())
+                ..sort())
               .last,
           64);
     });
@@ -97,7 +97,7 @@ void main() {
                   .split('\n')
                   .map((l) => l.length)
                   .toList()
-                    ..sort())
+                ..sort())
               .last,
           64);
       expect(rsaKeypair.publicKey.toFormattedPEM().length, 450);
