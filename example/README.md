@@ -15,14 +15,14 @@
   RSAKeypair rsaKeypair = RSAKeypair.fromRandom();
   String message = DateTime.now().millisecondsSinceEpoch.toRadixString(16);
 
-  String signature = rsaKeypair.privateKey.createSignature(message);
-  bool verified = rsaKeypair.publicKey.verifySignature(message, signature);
+  String signature = rsaKeypair.privateKey.createSHA256Signature(utf8.encode(message) as Uint8List);
+  bool verified = rsaKeypair.publicKey.verifySHA256Signature(message, signature);
 ````
 ##### Using EC
 ````dart
   ECKeypair ecKeypair = ECKeypair.fromRandom();
   String message = DateTime.now().millisecondsSinceEpoch.toRadixString(16);
 
-  String signature = ecKeypair.privateKey.createSignature(message);
-  bool verified = ecKeypair.publicKey.verifySignature(message, signature);
+  String signature = ecKeypair.privateKey.createSHA256Signature(utf8.encode(message) as Uint8List);
+  bool verified = ecKeypair.publicKey.verifySHA256Signature(message, signature);
 ````
