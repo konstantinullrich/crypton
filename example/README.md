@@ -26,3 +26,4 @@
   String signature = ecKeypair.privateKey.createSHA256Signature(utf8.encode(message) as Uint8List);
   bool verified = ecKeypair.publicKey.verifySHA256Signature(message, signature);
 ````
+
