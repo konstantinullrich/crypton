@@ -5,7 +5,7 @@ import 'package:crypton/crypton.dart';
 import 'package:test/test.dart';
 
 void main() {
-  group('A group of RSA Key Tests', () {
+  group('RSA Key Tests', () {
     late RSAKeypair rsaKeypair;
     late Uint8List message;
 
@@ -104,7 +104,7 @@ void main() {
     });
   });
 
-  group('A group of EC Key Tests', () {
+  group('EC Key Tests', () {
     late ECKeypair ecKeypair;
     late Uint8List message;
 
@@ -155,5 +155,47 @@ void main() {
           ecKeypair.publicKey.verifySHA512Signature(message, signature);
       expect(verified, isTrue);
     });
+  });
+
+  group('Edge Cases', () {
+    late RSAKeypair rsaKeypair;
+
+    setUp(() {
+      rsaKeypair = RSAKeypair.fromRandom(keySize: 2048);
+    });
+
+    test(
+        'Public key PEM-String is formatted and with a leading and trailing whitespace',
+        () {
+      var pemLeadingWhitespace = " \n${rsaKeypair.publicKey.toFormattedPEM()}";
+      var pemTrailingWhitespace = "${rsaKeypair.publicKey.toFormattedPEM()}\n ";
+
+      final publicKeyString = rsaKeypair.publicKey.toString();
+
+      final publicKeyLeadingWhitespace =
+          RSAPublicKey.fromPEM(pemLeadingWhitespace);
+      expect(publicKeyLeadingWhitespace.toString(), publicKeyString);
+
+      final publicKeyTrailingWhitespace =
+          RSAPublicKey.fromPEM(pemTrailingWhitespace);
+      expect(publicKeyTrailingWhitespace.toString(), publicKeyString);
+    });
+
+    test(
+        'Public key PEM-String is formatted and with a leading and trailing whitespace',
+            () {
+          var pemLeadingWhitespace = " \n${rsaKeypair.privateKey.toFormattedPEM()}";
+          var pemTrailingWhitespace = "${rsaKeypair.privateKey.toFormattedPEM()}\n ";
+
+          final publicKeyString = rsaKeypair.privateKey.toString();
+
+          final publicKeyLeadingWhitespace =
+          RSAPrivateKey.fromPEM(pemLeadingWhitespace);
+          expect(publicKeyLeadingWhitespace.toString(), publicKeyString);
+
+          final publicKeyTrailingWhitespace =
+          RSAPrivateKey.fromPEM(pemTrailingWhitespace);
+          expect(publicKeyTrailingWhitespace.toString(), publicKeyString);
+        });
   });
 }

@@ -31,7 +31,7 @@ class RSAPublicKey implements PublicKey {
 
   /// Create an [RSAPublicKey] from the given PEM-String.
   static RSAPublicKey fromPEM(String pemString) {
-    final rows = pemString.split(RegExp(r'\r\n?|\n'));
+    final rows = pemString.trim().split(RegExp(r'\r\n?|\n'));
     final privateKeyString = rows
         .skipWhile((row) => row.startsWith('-----BEGIN'))
         .takeWhile((row) => !row.startsWith('-----END'))
