@@ -13,5 +13,5 @@ dependencies:
   asn1lib: ^1.2.2
 
 dev_dependencies:
-  lints: ^2.0.0
+  lints: ^1.0.1
   test: ^1.21.5
