@@ -1,6 +1,6 @@
 name: crypton
 description: A simple Dart library for asymmetric encryption and digital signatures
-version: 2.0.5
+version: 2.1.0
 homepage: https://github.com/konstantinullrich
 repository: https://github.com/konstantinullrich/crypton
 issue_tracker: https://github.com/konstantinullrich/crypton/issues
@@ -9,9 +9,9 @@ environment:
   sdk: '>=2.14.0 <3.0.0'
 
 dependencies:
-  pointycastle: ^3.4.0
-  asn1lib: ^1.0.3
+  pointycastle: ^3.6.2
+  asn1lib: ^1.2.2
 
 dev_dependencies:
-  lints: ^1.0.1
-  test: ^1.19.3
+  lints: ^2.0.1
+  test: ^1.21.7

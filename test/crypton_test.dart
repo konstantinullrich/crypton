@@ -157,6 +157,32 @@ void main() {
     });
   });
 
+  group('KeyPair Factory Tests', () {
+    test('Generate a random RSA Keypair', () {
+      final keypair = RSAKeypairFactory().fromRandom();
+      expect(keypair, isNot(isA<ECKeypair>()));
+      expect(keypair, isA<RSAKeypair>());
+    });
+
+    test('Generate a random RSA Keypair asynchronously', () async {
+      final keypair = await RSAKeypairFactory().fromRandomAsync();
+      expect(keypair, isNot(isA<ECKeypair>()));
+      expect(keypair, isA<RSAKeypair>());
+    });
+
+    test('Generate a random EC Keypair', () {
+      final keypair = ECKeypairFactory().fromRandom();
+      expect(keypair, isNot(isA<RSAKeypair>()));
+      expect(keypair, isA<ECKeypair>());
+    });
+
+    test('Generate a random EC Keypair asynchronously', () async {
+      final keypair = await ECKeypairFactory().fromRandomAsync();
+      expect(keypair, isNot(isA<RSAKeypair>()));
+      expect(keypair, isA<ECKeypair>());
+    });
+  });
+
   group('Edge Cases', () {
     late RSAKeypair rsaKeypair;
 
