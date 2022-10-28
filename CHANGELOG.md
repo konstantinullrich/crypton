@@ -1,3 +1,7 @@
+## 2.1.0
+- Add `KeypairFactory`, `RSAKeypairFactory` and `ECKeypairFactory`
+- Update dependencies
+ 
 ## 2.0.5
 - Update Example Doc
 - Minor Bugfixes
