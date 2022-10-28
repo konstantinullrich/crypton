@@ -209,19 +209,20 @@ void main() {
 
     test(
         'Public key PEM-String is formatted and with a leading and trailing whitespace',
-            () {
-          var pemLeadingWhitespace = " \n${rsaKeypair.privateKey.toFormattedPEM()}";
-          var pemTrailingWhitespace = "${rsaKeypair.privateKey.toFormattedPEM()}\n ";
+        () {
+      var pemLeadingWhitespace = " \n${rsaKeypair.privateKey.toFormattedPEM()}";
+      var pemTrailingWhitespace =
+          "${rsaKeypair.privateKey.toFormattedPEM()}\n ";
 
-          final publicKeyString = rsaKeypair.privateKey.toString();
+      final publicKeyString = rsaKeypair.privateKey.toString();
 
-          final publicKeyLeadingWhitespace =
+      final publicKeyLeadingWhitespace =
           RSAPrivateKey.fromPEM(pemLeadingWhitespace);
-          expect(publicKeyLeadingWhitespace.toString(), publicKeyString);
+      expect(publicKeyLeadingWhitespace.toString(), publicKeyString);
 
-          final publicKeyTrailingWhitespace =
+      final publicKeyTrailingWhitespace =
           RSAPrivateKey.fromPEM(pemTrailingWhitespace);
-          expect(publicKeyTrailingWhitespace.toString(), publicKeyString);
-        });
+      expect(publicKeyTrailingWhitespace.toString(), publicKeyString);
+    });
   });
 }
