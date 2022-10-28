@@ -157,6 +157,32 @@ void main() {
     });
   });
 
+  group('KeyPair Factory Tests', () {
+    test('Generate a random RSA Keypair', () {
+      final keypair = RSAKeypairFactory().fromRandom();
+      expect(keypair, isNot(isA<ECKeypair>()));
+      expect(keypair, isA<RSAKeypair>());
+    });
+
+    test('Generate a random RSA Keypair asynchronously', () async {
+      final keypair = await RSAKeypairFactory().fromRandomAsync();
+      expect(keypair, isNot(isA<ECKeypair>()));
+      expect(keypair, isA<RSAKeypair>());
+    });
+
+    test('Generate a random EC Keypair', () {
+      final keypair = ECKeypairFactory().fromRandom();
+      expect(keypair, isNot(isA<RSAKeypair>()));
+      expect(keypair, isA<ECKeypair>());
+    });
+
+    test('Generate a random EC Keypair asynchronously', () async {
+      final keypair = await ECKeypairFactory().fromRandomAsync();
+      expect(keypair, isNot(isA<RSAKeypair>()));
+      expect(keypair, isA<ECKeypair>());
+    });
+  });
+
   group('Edge Cases', () {
     late RSAKeypair rsaKeypair;
 
@@ -183,19 +209,20 @@ void main() {
 
     test(
         'Public key PEM-String is formatted and with a leading and trailing whitespace',
-            () {
-          var pemLeadingWhitespace = " \n${rsaKeypair.privateKey.toFormattedPEM()}";
-          var pemTrailingWhitespace = "${rsaKeypair.privateKey.toFormattedPEM()}\n ";
+        () {
+      var pemLeadingWhitespace = " \n${rsaKeypair.privateKey.toFormattedPEM()}";
+      var pemTrailingWhitespace =
+          "${rsaKeypair.privateKey.toFormattedPEM()}\n ";
 
-          final publicKeyString = rsaKeypair.privateKey.toString();
+      final publicKeyString = rsaKeypair.privateKey.toString();
 
-          final publicKeyLeadingWhitespace =
+      final publicKeyLeadingWhitespace =
           RSAPrivateKey.fromPEM(pemLeadingWhitespace);
-          expect(publicKeyLeadingWhitespace.toString(), publicKeyString);
+      expect(publicKeyLeadingWhitespace.toString(), publicKeyString);
 
-          final publicKeyTrailingWhitespace =
+      final publicKeyTrailingWhitespace =
           RSAPrivateKey.fromPEM(pemTrailingWhitespace);
-          expect(publicKeyTrailingWhitespace.toString(), publicKeyString);
-        });
+      expect(publicKeyTrailingWhitespace.toString(), publicKeyString);
+    });
   });
 }
