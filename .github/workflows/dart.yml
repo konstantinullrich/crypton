@@ -8,14 +8,13 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
-    container:
-      image:  google/dart:latest
-
     steps:
     - uses: actions/checkout@v2
+    - uses: dart-lang/setup-dart@v1
+      with:
+        sdk: stable
+
     - name: Install dependencies
       run: pub get
 
