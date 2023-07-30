@@ -20,13 +20,13 @@ class RSAPublicKey implements PublicKey {
     final topLevelSeq = asn1Parser.nextObject() as ASN1Sequence;
     final publicKeyBitString = topLevelSeq.elements[1];
 
-    final publicKeyAsn = ASN1Parser(publicKeyBitString.contentBytes()!);
+    final publicKeyAsn = ASN1Parser(publicKeyBitString.contentBytes());
     final publicKeySeq = publicKeyAsn.nextObject() as ASN1Sequence;
     final modulus = publicKeySeq.elements[0] as ASN1Integer;
     final exponent = publicKeySeq.elements[1] as ASN1Integer;
 
     _publicKey = pointy.RSAPublicKey(
-        modulus.valueAsBigInteger!, exponent.valueAsBigInteger!);
+        modulus.valueAsBigInteger, exponent.valueAsBigInteger);
   }
 
   /// Create an [RSAPublicKey] from the given PEM-String.
