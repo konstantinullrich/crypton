@@ -20,7 +20,7 @@ class RSAPrivateKey implements PrivateKey {
     final topLevelSeq = asn1Parser.nextObject() as ASN1Sequence;
     final privateKey = topLevelSeq.elements[2];
 
-    asn1Parser = ASN1Parser(privateKey.contentBytes()!);
+    asn1Parser = ASN1Parser(privateKey.contentBytes());
     final pkSeq = asn1Parser.nextObject() as ASN1Sequence;
 
     final modulus = pkSeq.elements[1] as ASN1Integer;
@@ -29,8 +29,8 @@ class RSAPrivateKey implements PrivateKey {
     final q = pkSeq.elements[5] as ASN1Integer;
 
     _privateKey = pointy.RSAPrivateKey(
-        modulus.valueAsBigInteger!,
-        privateExponent.valueAsBigInteger!,
+        modulus.valueAsBigInteger,
+        privateExponent.valueAsBigInteger,
         p.valueAsBigInteger,
         q.valueAsBigInteger);
   }
