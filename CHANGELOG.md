@@ -1,3 +1,6 @@
+## 2.2.0
+- Update `asn1lib` dependency to ^1.5.0 and fix the resulting lint warnings 
+
 ## 2.1.0
 - Add `KeypairFactory`, `RSAKeypairFactory` and `ECKeypairFactory`
 - Update dependencies

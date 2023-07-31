@@ -6,7 +6,7 @@ repository: https://github.com/konstantinullrich/crypton
 issue_tracker: https://github.com/konstantinullrich/crypton/issues
 
 environment:
-  sdk: ^3.0.0
+  sdk: '>=2.14.0 <4.0.0'
 
 dependencies:
   pointycastle: ^3.7.3
