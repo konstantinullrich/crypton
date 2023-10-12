@@ -1,3 +1,7 @@
+## 2.2.1
+- Update dependencies
+- Update Readme
+
 ## 2.2.0
 - Update `asn1lib` dependency to ^1.5.0 and fix the resulting lint warnings 
 

@@ -1,11 +1,9 @@
 # Crypton
 A simple Dart library for asymmetric encryption and digital signatures
 
-> This library is a simplified interface to interact with the [pointy castle](https://github.com/PointyCastle/pointycastle)
+> This library is a simplified interface to interact with the [pointy castle](https://pub.dev/packages/pointycastle)
 
-
-For symmetric encryption and hashing I strongly recommend to use [steel_crypt](https://pub.dev/packages/steel_crypt).
-The Dev there has a deep understanding of symmetric encryption and actively maintains the project.  
+For symmetric encryption and hashing I strongly recommend to use [steel_crypt](https://pub.dev/packages/steel_crypt). 
 
 ## Features
 #### RSA
