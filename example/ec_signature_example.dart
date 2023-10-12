@@ -9,8 +9,7 @@ void main() {
 
   final privateKeyString = ecKeypair.privateKey.toString();
   final publicKeyString = ecKeypair.publicKey.toString();
-  final signature =
-      ecKeypair.privateKey.createSHA256Signature(message);
+  final signature = ecKeypair.privateKey.createSHA256Signature(message);
   final verified =
       ecKeypair.privateKey.publicKey.verifySHA256Signature(message, signature);
 

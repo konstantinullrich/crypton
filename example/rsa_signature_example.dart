@@ -9,8 +9,7 @@ void main() {
 
   final privateKeyString = rsaKeypair.privateKey.toString();
   final publicKeyString = rsaKeypair.publicKey.toString();
-  final signature =
-      rsaKeypair.privateKey.createSHA256Signature(message);
+  final signature = rsaKeypair.privateKey.createSHA256Signature(message);
   final verified =
       rsaKeypair.publicKey.verifySHA256Signature(message, signature);
 
