@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:typed_data';
 
 import 'package:crypton/crypton.dart';
 
@@ -11,7 +10,7 @@ void main() {
   final privateKeyString = ecKeypair.privateKey.toString();
   final publicKeyString = ecKeypair.publicKey.toString();
   final signature =
-      ecKeypair.privateKey.createSHA256Signature(message as Uint8List);
+      ecKeypair.privateKey.createSHA256Signature(message);
   final verified =
       ecKeypair.privateKey.publicKey.verifySHA256Signature(message, signature);
 

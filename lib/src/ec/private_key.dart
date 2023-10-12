@@ -21,7 +21,7 @@ class ECPrivateKey implements PrivateKey {
   @override
   @Deprecated('Use createSHA256Signature for creating SHA-256 signatures')
   String createSignature(String message) =>
-      utf8.decode(createSHA256Signature(utf8.encode(message) as Uint8List));
+      utf8.decode(createSHA256Signature(utf8.encode(message)));
 
   /// Sign an message with SHA-256 which can be verified using the associated [ECPublicKey]
   @override
@@ -39,8 +39,7 @@ class ECPrivateKey implements PrivateKey {
         pointy.PrivateKeyParameter(_privateKey);
     signer.init(true, privateKeyParams);
     final sig = signer.generateSignature(message) as pointy.ECSignature;
-    return utf8.encode(sig.r.toRadixString(16) + sig.s.toRadixString(16))
-        as Uint8List;
+    return utf8.encode(sig.r.toRadixString(16) + sig.s.toRadixString(16));
   }
 
   /// Get the [ECPublicKey] of the [ECPrivateKey]

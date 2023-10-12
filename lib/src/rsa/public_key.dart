@@ -44,8 +44,7 @@ class RSAPublicKey implements PublicKey {
   @Deprecated('For SHA256 signature verification use verifySHA256Signature')
   @override
   bool verifySignature(String message, String signature) =>
-      verifySHA256Signature(
-          utf8.encode(message) as Uint8List, base64.decode(signature));
+      verifySHA256Signature(utf8.encode(message), base64.decode(signature));
 
   /// Verify the signature of a SHA256-hashed message signed with the associated [RSAPrivateKey]
   @override
@@ -69,7 +68,7 @@ class RSAPublicKey implements PublicKey {
 
   /// Encrypt a message which can only be decrypted using the associated [RSAPrivateKey]
   String encrypt(String message) =>
-      base64.encode(encryptData(utf8.encode(message) as Uint8List));
+      base64.encode(encryptData(utf8.encode(message)));
 
   /// Encrypt a message which can only be decrypted using the associated [RSAPrivateKey]
   Uint8List encryptData(Uint8List message) {
